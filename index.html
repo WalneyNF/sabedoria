@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>O Caminho da Sabedoria - Edição Completa</title>
+<title>O Caminho da Sabedoria - v0.2</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/inter@latest/latin-400-normal.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/cinzel@latest/latin-700-normal.css">
@@ -56,12 +56,23 @@
     from { opacity: 0; transform: translateX(50px); }
     to { opacity: 1; transform: translateX(0); }
   }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes badgePop {
+    0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+    60% { transform: scale(1.2) rotate(10deg); opacity: 1; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
   .animate-fade { animation: fadeIn 0.8s ease-out; }
   .animate-fade-scale { animation: fadeInScale 0.5s ease-out; }
   .animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
   .animate-float { animation: float 3s ease-in-out infinite; }
   .animate-shake { animation: shake 0.5s ease-in-out; }
   .animate-slide-right { animation: slideInRight 0.5s ease-out; }
+  .animate-slide-up { animation: slideUp 0.6s ease-out; }
+  .animate-badge-pop { animation: badgePop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); }
   .shimmer-text {
     background: linear-gradient(90deg, #d4af37 0%, #f4d03f 50%, #d4af37 100%);
     background-size: 200% auto;
@@ -200,6 +211,74 @@
   }
   .screen { display: none; }
   .screen.active { display: block; }
+  
+  /* Share cards */
+  .share-card {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(30, 30, 50, 0.9) 100%);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .share-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(212, 175, 55, 0.6);
+    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+  }
+  .share-card::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .share-card:hover::before { opacity: 1; }
+  
+  /* Achievement unlock banner */
+  .achievement-banner {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.95) 0%, rgba(139, 117, 0, 0.95) 100%);
+    border: 2px solid rgba(255, 215, 0, 0.8);
+    padding: 1rem 2rem;
+    border-radius: 1rem;
+    z-index: 9999;
+    box-shadow: 0 20px 60px rgba(212, 175, 55, 0.4);
+    animation: slideUp 0.6s ease-out, badgePop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  
+  /* Pause overlay */
+  .pause-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Copy button */
+  .copy-btn {
+    transition: all 0.2s;
+  }
+  .copy-btn.copied {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+    color: white !important;
+  }
+  
+  /* QR Code container */
+  .qr-container {
+    background: white;
+    padding: 1rem;
+    border-radius: 1rem;
+    display: inline-block;
+  }
 </style>
 </head>
 <body>
@@ -215,6 +294,7 @@
       </h1>
       <p class="text-lg text-gray-300 italic">"Quem domina o seu espírito é melhor do que o que toma uma cidade."</p>
       <p class="text-sm text-gray-400 mt-2">— Provérbios 16:32</p>
+      <p class="text-xs text-amber-500 mt-2 font-mono">Versão 0.2</p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
@@ -248,6 +328,12 @@
         <p class="text-sm text-gray-300">Veja suas conquistas desbloqueadas e seu progresso geral.</p>
       </button>
 
+      <button onclick="showScreen('screen-share')" class="menu-btn rounded-2xl p-6 text-left">
+        <div class="text-4xl mb-2">📣</div>
+        <h3 class="title-font text-xl text-amber-400 mb-2">Divulgação</h3>
+        <p class="text-sm text-gray-300">Compartilhe o jogo nas redes sociais, copie o link e convide amigos para a jornada!</p>
+      </button>
+
       <button onclick="showScreen('screen-settings')" class="menu-btn rounded-2xl p-6 text-left">
         <div class="text-4xl mb-2">⚙️</div>
         <h3 class="title-font text-xl text-amber-400 mb-2">Configurações</h3>
@@ -255,10 +341,163 @@
       </button>
     </div>
 
-    <div class="text-center">
+    <div class="text-center flex gap-4 justify-center flex-wrap">
       <button onclick="showScreen('screen-credits')" class="text-amber-400 hover:text-amber-300 text-sm underline">
         Créditos & Sobre
       </button>
+      <a href="https://walneynf.github.io/sabedoria/" target="_blank" class="text-amber-400 hover:text-amber-300 text-sm underline">
+        🌐 Kit de Divulgação Online
+      </a>
+    </div>
+  </div>
+
+  <!-- DIVULGAÇÃO -->
+  <div id="screen-share" class="screen max-w-5xl mx-auto py-8 animate-fade">
+    <button onclick="showScreen('screen-menu')" class="mb-4 text-amber-400 hover:text-amber-300">← Voltar</button>
+    <div class="bg-black/50 backdrop-blur-sm rounded-2xl p-8 card-glow border border-amber-900/30">
+      <div class="text-5xl text-center mb-4 animate-float">📣</div>
+      <h2 class="title-font text-3xl text-amber-400 text-center mb-2">Kit de Divulgação</h2>
+      <p class="text-gray-300 text-center mb-8">Compartilhe "O Caminho da Sabedoria" com o mundo! Convide amigos para trilharem o caminho da sabedoria.</p>
+
+      <!-- Link para copiar -->
+      <div class="bg-black/40 rounded-xl p-6 border border-amber-900/30 mb-6">
+        <h3 class="text-amber-400 font-semibold mb-3 flex items-center gap-2">
+          <span class="text-2xl">🔗</span> Link do Jogo
+        </h3>
+        <div class="flex gap-2">
+          <input type="text" id="game-url" value="https://walneynf.github.io/sabedoria/" readonly class="flex-1 font-mono text-sm">
+          <button onclick="copyLink()" id="copy-link-btn" class="copy-btn bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-black font-bold py-2 px-4 rounded-lg whitespace-nowrap">
+            📋 Copiar
+          </button>
+        </div>
+      </div>
+
+      <!-- QR Code -->
+      <div class="bg-black/40 rounded-xl p-6 border border-amber-900/30 mb-6 text-center">
+        <h3 class="text-amber-400 font-semibold mb-4 flex items-center justify-center gap-2">
+          <span class="text-2xl">📱</span> QR Code
+        </h3>
+        <div class="qr-container mb-3">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://walneynf.github.io/sabedoria/" alt="QR Code" class="w-48 h-48 mx-auto">
+        </div>
+        <p class="text-xs text-gray-400">Escaneie com o celular para acessar o jogo</p>
+      </div>
+
+      <!-- Redes Sociais -->
+      <div class="bg-black/40 rounded-xl p-6 border border-amber-900/30 mb-6">
+        <h3 class="text-amber-400 font-semibold mb-4 flex items-center gap-2">
+          <span class="text-2xl">🌐</span> Compartilhar nas Redes Sociais
+        </h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <button onclick="shareWhatsApp()" class="bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-4 rounded-xl transition-all flex items-center justify-center gap-2">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            WhatsApp
+          </button>
+          <button onclick="shareFacebook()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-4 rounded-xl transition-all flex items-center justify-center gap-2">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            Facebook
+          </button>
+          <button onclick="shareTwitter()" class="bg-black hover:bg-gray-800 text-white font-bold py-3 px-4 rounded-xl transition-all flex items-center justify-center gap-2">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            X/Twitter
+          </button>
+          <button onclick="shareTelegram()" class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-3 px-4 rounded-xl transition-all flex items-center justify-center gap-2">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+            Telegram
+          </button>
+          <button onclick="shareLinkedIn()" class="bg-blue-700 hover:bg-blue-600 text-white font-bold py-3 px-4 rounded-xl transition-all flex items-center justify-center gap-2">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.063 2.063 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            LinkedIn
+          </button>
+          <button onclick="shareEmail()" class="bg-red-600 hover:bg-red-500 text-white font-bold py-3 px-4 rounded-xl transition-all flex items-center justify-center gap-2">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 5.457v13.909c0 .906-.734 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636C.73 21.003 0 20.273 0 19.366V5.457c0-.886.68-1.619 1.559-1.693l.041-.002h20.8l.041.003C23.32 3.838 24 4.571 24 5.457z"/></svg>
+            E-mail
+          </button>
+          <button onclick="shareDiscord()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-4 rounded-xl transition-all flex items-center justify-center gap-2">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2102 0 2.175 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2102 0 2.1751 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189z"/></svg>
+            Discord
+          </button>
+          <button onclick="copyText()" class="bg-amber-600 hover:bg-amber-500 text-black font-bold py-3 px-4 rounded-xl transition-all flex items-center justify-center gap-2">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+            Copiar Texto
+          </button>
+        </div>
+      </div>
+
+      <!-- Cards prontos para compartilhar -->
+      <div class="bg-black/40 rounded-xl p-6 border border-amber-900/30 mb-6">
+        <h3 class="text-amber-400 font-semibold mb-4 flex items-center gap-2">
+          <span class="text-2xl">📝</span> Mensagens Prontas para Compartilhar
+        </h3>
+        <div class="space-y-3">
+          <div class="share-card rounded-xl p-4" onclick="copyShareMessage(this)">
+            <div class="flex items-start gap-3">
+              <div class="text-3xl">🎯</div>
+              <div class="flex-1">
+                <p class="text-gray-200 text-sm leading-relaxed">"Você domina suas emoções ou elas te dominam? Teste sua sabedoria em 'O Caminho da Sabedoria' — um jogo que combina estoicismo e ensinamentos bíblicos. 🛤️ https://walneynf.github.io/sabedoria/"</p>
+              </div>
+            </div>
+            <div class="text-xs text-amber-400 mt-2">Clique para copiar</div>
+          </div>
+
+          <div class="share-card rounded-xl p-4" onclick="copyShareMessage(this)">
+            <div class="flex items-start gap-3">
+              <div class="text-3xl">💡</div>
+              <div class="flex-1">
+                <p class="text-gray-200 text-sm leading-relaxed">"Aprenda a arte do autocontrole através de situações reais. Enfrente desafios emocionais, aprenda com Marco Aurélio, Epicteto e a Bíblia. Jogue agora: https://walneynf.github.io/sabedoria/ ⚖️"</p>
+              </div>
+            </div>
+            <div class="text-xs text-amber-400 mt-2">Clique para copiar</div>
+          </div>
+
+          <div class="share-card rounded-xl p-4" onclick="copyShareMessage(this)">
+            <div class="flex items-start gap-3">
+              <div class="text-3xl">🏆</div>
+              <div class="flex-1">
+                <p class="text-gray-200 text-sm leading-relaxed">"Desafio: consiga 80+ em Autocontrole, Sabedoria e Paz Interior em 10 dias de provações! Você tem o que é preciso para ser um Mestre da Sabedoria? https://walneynf.github.io/sabedoria/ 👑"</p>
+              </div>
+            </div>
+            <div class="text-xs text-amber-400 mt-2">Clique para copiar</div>
+          </div>
+
+          <div class="share-card rounded-xl p-4" onclick="copyShareMessage(this)">
+            <div class="flex items-start gap-3">
+              <div class="text-3xl">🎮</div>
+              <div class="flex-1">
+                <p class="text-gray-200 text-sm leading-relaxed">"Descobri um jogo incrível! 'O Caminho da Sabedoria' - 2 modos (Jornada e Show da Sabedoria), editor de perguntas, conquistas. E o melhor: te faz refletir sobre suas escolhas! https://walneynf.github.io/sabedoria/"</p>
+              </div>
+            </div>
+            <div class="text-xs text-amber-400 mt-2">Clique para copiar</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Estatísticas para compartilhar -->
+      <div class="bg-gradient-to-br from-amber-900/20 to-black/40 rounded-xl p-6 border border-amber-500/30 mb-6">
+        <h3 class="text-amber-400 font-semibold mb-4 flex items-center gap-2">
+          <span class="text-2xl">📊</span> Compartilhe Suas Conquistas
+        </h3>
+        <div id="share-stats" class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+          <!-- Populado via JS -->
+        </div>
+        <button onclick="copyStats()" class="w-full bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-black font-bold py-3 rounded-xl transition-all">
+          📋 Copiar Minhas Estatísticas
+        </button>
+      </div>
+
+      <!-- Dicas de divulgação -->
+      <div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-4">
+        <h3 class="text-blue-400 font-semibold mb-2 flex items-center gap-2">
+          <span class="text-xl">💡</span> Dicas para Divulgar
+        </h3>
+        <ul class="text-sm text-gray-300 space-y-2">
+          <li>📱 <strong>WhatsApp:</strong> Compartilhe com grupos de família, igreja ou amigos</li>
+          <li>🎓 <strong>Educação:</strong> Sugira para professores de filosofia e religião</li>
+          <li>📸 <strong>Instagram Stories:</strong> Tire print do jogo e compartilhe com o link</li>
+          <li>📺 <strong>YouTube/TikTok:</strong> Faça um vídeo mostrando o jogo</li>
+          <li>⛪ <strong>Comunidades:</strong> Compartilhe em grupos religiosos e filosóficos</li>
+        </ul>
+      </div>
     </div>
   </div>
 
@@ -324,8 +563,16 @@
       </div>
     </div>
 
-    <div class="text-center mb-4">
+    <div class="text-center mb-4 flex justify-between items-center">
       <span class="text-amber-400 title-font text-lg">Dia <span id="day-counter">1</span> de 10</span>
+      <div class="flex gap-2">
+        <button onclick="pauseJourney()" class="bg-black/40 border border-amber-900/50 hover:border-amber-500 text-amber-400 text-sm px-4 py-2 rounded-lg transition-all">
+          ⏸️ Pausar
+        </button>
+        <button onclick="confirmQuitJourney()" class="bg-black/40 border border-red-900/50 hover:border-red-500 text-red-400 text-sm px-4 py-2 rounded-lg transition-all">
+          ✕ Abandonar
+        </button>
+      </div>
     </div>
 
     <div id="event-container" class="bg-black/50 backdrop-blur-sm rounded-2xl p-8 card-glow border border-amber-900/30 animate-fade">
@@ -343,8 +590,40 @@
         Continuar →
       </button>
     </div>
+  </div>
 
-    <button onclick="confirmQuit()" class="mt-4 w-full text-gray-400 hover:text-gray-200 text-sm">← Abandonar Jornada</button>
+  <!-- PAUSE OVERLAY -->
+  <div id="pause-overlay" class="hidden">
+    <div class="bg-gradient-to-br from-gray-900 to-black rounded-2xl p-8 max-w-md w-full border border-amber-500/50 text-center">
+      <div class="text-6xl mb-4">⏸️</div>
+      <h3 class="title-font text-3xl text-amber-400 mb-4">Jornada Pausada</h3>
+      <p class="text-gray-300 mb-6">Sua jornada está salva. Volte quando estiver pronto!</p>
+      <div class="bg-black/40 rounded-xl p-4 mb-6">
+        <div class="grid grid-cols-3 gap-2 text-center">
+          <div>
+            <div class="text-amber-400 font-bold" id="pause-day">Dia 1</div>
+            <div class="text-xs text-gray-400">Progresso</div>
+          </div>
+          <div>
+            <div class="text-amber-400 font-bold" id="pause-autocontrole">50</div>
+            <div class="text-xs text-gray-400">🛡️</div>
+          </div>
+          <div>
+            <div class="text-amber-400 font-bold" id="pause-sabedoria">50</div>
+            <div class="text-xs text-gray-400">📖</div>
+          </div>
+        </div>
+      </div>
+      <div class="flex gap-2">
+        <button onclick="resumeJourney()" class="flex-1 bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-black font-bold py-3 rounded-xl">
+          ▶️ Continuar
+        </button>
+        <button onclick="saveAndQuitJourney()" class="flex-1 bg-black/40 border border-amber-900/50 hover:border-amber-500 text-amber-400 font-bold py-3 rounded-xl">
+          🏠 Menu
+        </button>
+      </div>
+      <p class="text-xs text-gray-500 mt-4">Você pode voltar ao menu sem perder seu progresso. A jornada fica salva até você abandoná-la.</p>
+    </div>
   </div>
 
   <!-- FIM DA JORNADA -->
@@ -356,12 +635,15 @@
       <div id="end-stats" class="grid grid-cols-3 gap-4 mb-6"></div>
       <div id="end-quote" class="border-l-4 border-amber-500 pl-4 italic text-amber-200 text-left"></div>
     </div>
-    <div class="flex gap-3 justify-center">
+    <div class="flex gap-3 justify-center flex-wrap">
       <button onclick="showScreen('screen-menu')" class="bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-black font-bold py-3 px-8 rounded-full transition-all">
         Menu Principal
       </button>
       <button onclick="startJourney()" class="bg-black/40 border border-amber-900/50 hover:border-amber-500 text-amber-400 font-bold py-3 px-8 rounded-full transition-all">
         Jogar Novamente
+      </button>
+      <button onclick="shareResult()" class="bg-gradient-to-r from-green-700 to-green-600 hover:from-green-600 hover:to-green-500 text-white font-bold py-3 px-8 rounded-full transition-all">
+        📣 Compartilhar Resultado
       </button>
     </div>
   </div>
@@ -491,7 +773,7 @@
       <button id="btn-stop" onclick="stopMillionaire()" class="flex-1 bg-gradient-to-r from-green-700 to-green-600 hover:from-green-600 hover:to-green-500 text-white font-bold py-3 rounded-xl transition-all">
         💰 Parar e Levar
       </button>
-      <button onclick="confirmQuit()" class="bg-black/40 border border-red-900/50 hover:border-red-500 text-red-400 font-bold py-3 px-6 rounded-xl transition-all">
+      <button onclick="confirmQuitMillionaire()" class="bg-black/40 border border-red-900/50 hover:border-red-500 text-red-400 font-bold py-3 px-6 rounded-xl transition-all">
         Desistir
       </button>
     </div>
@@ -829,7 +1111,7 @@
     <div class="bg-black/50 backdrop-blur-sm rounded-2xl p-8 card-glow border border-amber-900/30 text-center">
       <div class="text-6xl mb-4 animate-float">⚖️</div>
       <h2 class="title-font text-4xl shimmer-text mb-2">O Caminho da Sabedoria</h2>
-      <p class="text-gray-400 mb-6">Edição Completa v2.0</p>
+      <p class="text-gray-400 mb-6">Versão 0.2</p>
 
       <div class="bg-black/40 rounded-xl p-6 border border-amber-900/30 mb-6">
         <h3 class="text-amber-400 title-font text-xl mb-4">Desenvolvido por</h3>
@@ -837,6 +1119,19 @@
         <a href="mailto:walneyk@hotmail.com" class="text-amber-400 hover:text-amber-300 underline">
           📧 walneyk@hotmail.com
         </a>
+      </div>
+
+      <div class="bg-gradient-to-br from-amber-900/30 to-black/40 rounded-xl p-6 border border-amber-500/30 mb-6">
+        <h3 class="text-amber-400 title-font text-xl mb-4">📣 Kit de Divulgação</h3>
+        <p class="text-gray-300 text-sm mb-4">
+          Hospedado em: 
+          <a href="https://walneynf.github.io/sabedoria/" target="_blank" class="text-amber-400 hover:text-amber-300 underline">
+            https://walneynf.github.io/sabedoria/
+          </a>
+        </p>
+        <button onclick="showScreen('screen-share')" class="bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-black font-bold py-2 px-6 rounded-lg">
+          Ver Menu de Divulgação
+        </button>
       </div>
 
       <div class="bg-black/40 rounded-xl p-6 border border-amber-900/30 mb-6 text-left">
@@ -854,6 +1149,18 @@
           Com dois modos de jogo (Jornada e Show da Sabedoria), editor de perguntas personalizado, 
           sistema de conquistas e muito mais, você pode aprender, ensinar e compartilhar sabedoria.
         </p>
+      </div>
+
+      <div class="bg-black/40 rounded-xl p-6 border border-amber-900/30 mb-6">
+        <h3 class="text-amber-400 title-font text-xl mb-4">Novidades da Versão 0.2</h3>
+        <ul class="text-gray-300 text-sm text-left space-y-2">
+          <li>✨ <strong>Menu de Divulgação:</strong> Compartilhe o jogo em várias redes sociais com um clique</li>
+          <li>📱 <strong>QR Code:</strong> Escaneie e compartilhe com facilidade</li>
+          <li>⏸️ <strong>Pausar Jornada:</strong> Agora você pode pausar e continuar depois sem perder progresso</li>
+          <li>🏆 <strong>Conquistas Corrigidas:</strong> Sistema de conquistas agora registra corretamente</li>
+          <li>📣 <strong>Compartilhar Resultado:</strong> Mostre seu desempenho nas redes sociais</li>
+          <li>🎨 <strong>Melhorias Visuais:</strong> Novas animações e interface mais polida</li>
+        </ul>
       </div>
 
       <div class="bg-black/40 rounded-xl p-6 border border-amber-900/30 mb-6">
@@ -919,6 +1226,9 @@
     </div>
   </div>
 </div>
+
+<!-- ACHIEVEMENT BANNER -->
+<div id="achievement-banner" class="hidden"></div>
 
 <script>
 // ============================================
@@ -992,7 +1302,7 @@ const DEFAULT_QUESTIONS = [
     choices: [
       { text: 'Se revoltar contra Deus, contra a vida, e afundar em desespero total', result: { autocontrole: -10, sabedoria: -10, paz: -15 }, feedback: 'A dor é legítima, mas o desespero sem fé rouba a força de quem precisa de você agora.', quote: '"Na verdade, na verdade vos digo que vós chorareis e vos lamentareis, e o mundo se alegrará." — João 16:20', quality: 'bad' },
       { text: 'Permitir-se sentir a dor, mas buscar força na fé, na família e no que está sob seu controle', result: { autocontrole: 15, sabedoria: 15, paz: 15 }, feedback: 'Você aceitou o que não pode mudar e lutou pelo que pode. Isso é sabedoria pura.', quote: '"Concede-me, Senhor, serenidade para aceitar o que não posso mudar, coragem para mudar o que posso, e sabedoria para distinguir um do outro." — Reinhold Niebuhr', quality: 'good' },
-      { text: 'Fingir que está tudo bem, não demonstrar emoção nenhuma para "ser forte"', result: { autocontrole: -5, sabedoria: -5, paz: -10 }, feedback: 'Reprimir emoções não é força — é uma bomba-relógio. Ser forte é também permitir-se sentir.', quote: '"Bem-aventados os que choram, porque serão consolados." — Mateus 5:4', quality: 'neutral' }
+      { text: 'Fingir que está tudo bem, não demonstrar emoção nenhuma para "ser forte"', result: { autocontrole: -5, sabedoria: -5, paz: -10 }, feedback: 'Reprimir emoções não é força — é uma bomba-relógio. Ser forte é também permitir-se sentir.', quote: '"Bem-aventurados os que choram, porque serão consolados." — Mateus 5:4', quality: 'neutral' }
     ]
   },
   {
@@ -1092,7 +1402,7 @@ const DEFAULT_QUESTIONS = [
     choices: [
       { text: 'Continuar assim — afinal, você realmente sabe mais que a maioria', result: { autocontrole: -10, sabedoria: -15, paz: -10 }, feedback: 'O conhecimento sem humildade se torna prisão. Você se isolou em sua própria torre.', quote: '"O conhecimento ensoberbece, mas o amor edifica." — 1 Coríntios 8:1', quality: 'bad' },
       { text: 'Lembrar que quanto mais se sabe, mais se percebe o quanto se ignora. Continuar aprendendo com todos', result: { autocontrole: 15, sabedoria: 15, paz: 15 }, feedback: 'Verdadeira sabedoria. Você entendeu que aprender é um caminho sem fim.', quote: '"O princípio da sabedoria é o temor do Senhor." — Salmos 111:10', quality: 'good' },
-      { text: 'Esconder seu conhecimento para parecer modesto', result: { autocontrole: -5, sabedoria: -5, paz: -5 }, feedback: 'Falsa modéstia não é virtude — é vaidade disfarçada. Use seu conhecimento para servir.', quote: '"Ass brilhe a luz de vocês diante dos homens." — Mateus 5:16', quality: 'neutral' }
+      { text: 'Esconder seu conhecimento para parecer modesto', result: { autocontrole: -5, sabedoria: -5, paz: -5 }, feedback: 'Falsa modéstia não é virtude — é vaidade disfarçada. Use seu conhecimento para servir.', quote: '"Assim brilhe a luz de vocês diante dos homens." — Mateus 5:16', quality: 'neutral' }
     ]
   },
   {
@@ -1102,7 +1412,7 @@ const DEFAULT_QUESTIONS = [
     choices: [
       { text: 'Se isolar completamente, recusar ajuda, e afundar na depressão sem buscar sentido', result: { autocontrole: -15, sabedoria: -15, paz: -15 }, feedback: 'A dor é real, mas o isolamento a multiplica. Você se perdeu no abismo.', quote: '"Não quero, porém, irmãos, que sejais ignorantes acerca dos que já dormem." — 1 Tessalonicenses 4:13', quality: 'bad' },
       { text: 'Permitir-se chorar, honrar a memória de quem partiu, e buscar conforto na fé e nas pessoas que ama', result: { autocontrole: 15, sabedoria: 15, paz: 15 }, feedback: 'Você honrou o amor que sentia. O luto é o preço do amor — e vale a pena pagá-lo com dignidade.', quote: '"Jesus chorou." — João 11:35', quality: 'good' },
-      { text: 'Fingir que está tudo bem, se manter ocupado o tempo todo para não sentir a dor', result: { autocontrole: -10, sabedoria: -10, paz: -15 }, feedback: 'A dor não processada explode mais tarde. Fugir do luto é adiar o encontro com você mesmo.', quote: '"Bem-aventados os que choram, porque serão consolados." — Mateus 5:4', quality: 'bad' }
+      { text: 'Fingir que está tudo bem, se manter ocupado o tempo todo para não sentir a dor', result: { autocontrole: -10, sabedoria: -10, paz: -15 }, feedback: 'A dor não processada explode mais tarde. Fugir do luto é adiar o encontro com você mesmo.', quote: '"Bem-aventurados os que choram, porque serão consolados." — Mateus 5:4', quality: 'bad' }
     ]
   },
   {
@@ -1183,7 +1493,10 @@ let state = {
     journeysCompleted: 0,
     millionaireWins: 0,
     totalMoney: 0,
-    achievements: []
+    achievements: [],
+    lastJourneyPerfect: false,
+    totalCorrect: 0,
+    playedAll: false
   },
   journey: {
     day: 1,
@@ -1192,7 +1505,8 @@ let state = {
     sabedoria: 50,
     paz: 50,
     usedEvents: [],
-    currentEvent: null
+    currentEvent: null,
+    isPaused: false
   },
   millionaire: {
     category: 'all',
@@ -1218,8 +1532,8 @@ const ACHIEVEMENTS = [
   { id: 'journey_legend', icon: '🏆', title: 'Lenda Viva', desc: 'Complete 10 jornadas', check: s => s.journeysCompleted >= 10 },
   { id: 'first_million', icon: '💰', title: 'Primeiro Milhão', desc: 'Ganhe R$ 1.000.000 no Show', check: s => s.totalMoney >= 1000000 },
   { id: 'rich', icon: '💎', title: 'Magnata', desc: 'Acumule R$ 500.000 no total', check: s => s.totalMoney >= 500000 },
-  { id: 'creator', icon: '✏️', title: 'Criador', desc: 'Crie sua primeira pergunta', check: s => s.questions.filter(q => q.custom).length >= 1 },
-  { id: 'author', icon: '📚', title: 'Autor Prolífico', desc: 'Crie 10 perguntas', check: s => s.questions.filter(q => q.custom).length >= 10 },
+  { id: 'creator', icon: '✏️', title: 'Criador', desc: 'Crie sua primeira pergunta', check: () => state.questions.filter(q => q.custom).length >= 1 },
+  { id: 'author', icon: '📚', title: 'Autor Prolífico', desc: 'Crie 10 perguntas', check: () => state.questions.filter(q => q.custom).length >= 10 },
   { id: 'stoic', icon: '🏛️', title: 'Estoico', desc: 'Termine jornada com 80+ em todos atributos', check: s => s.lastJourneyPerfect },
   { id: 'wise', icon: '🦉', title: 'Sábio', desc: 'Responda 50 perguntas corretamente no Show', check: s => s.totalCorrect >= 50 },
   { id: 'explorer', icon: '🗺️', title: 'Explorador', desc: 'Jogue todos os modos', check: s => s.playedAll }
@@ -1376,6 +1690,7 @@ function showScreen(screenId) {
   if (screenId === 'screen-achievements') renderAchievements();
   if (screenId === 'screen-settings') loadSettingsUI();
   if (screenId === 'screen-data') loadJsonToViewer();
+  if (screenId === 'screen-share') renderShareStats();
 }
 
 // ============================================
@@ -1387,7 +1702,7 @@ function startJourney() {
   state.journey = {
     day: 1, maxDays: 10,
     autocontrole: 50, sabedoria: 50, paz: 50,
-    usedEvents: [], currentEvent: null
+    usedEvents: [], currentEvent: null, isPaused: false
   };
   showScreen('screen-journey');
   showJourneyEvent();
@@ -1486,8 +1801,15 @@ function endJourney() {
   stopAmbientMusic();
   state.stats.journeysCompleted++;
   
+  // RESET lastJourneyPerfect para cada nova jornada
+  state.stats.lastJourneyPerfect = false;
+  
   const avg = (state.journey.autocontrole + state.journey.sabedoria + state.journey.paz) / 3;
-  if (avg >= 80) state.stats.lastJourneyPerfect = true;
+  
+  // Verifica se a jornada atual foi perfeita (80+ em todos os atributos)
+  if (avg >= 80) {
+    state.stats.lastJourneyPerfect = true;
+  }
   
   const endIcon = document.getElementById('end-icon');
   const endTitle = document.getElementById('end-title');
@@ -1540,9 +1862,57 @@ function endJourney() {
     playError();
   }
   
+  // Chamar checkAchievements DEPOIS de setar lastJourneyPerfect
   checkAchievements();
   saveState();
   showScreen('screen-journey-end');
+}
+
+// ============================================
+// PAUSA NA JORNADA
+// ============================================
+function pauseJourney() {
+  state.journey.isPaused = true;
+  stopAmbientMusic();
+  
+  document.getElementById('pause-day').textContent = `Dia ${state.journey.day}`;
+  document.getElementById('pause-autocontrole').textContent = state.journey.autocontrole;
+  document.getElementById('pause-sabedoria').textContent = state.journey.sabedoria;
+  
+  document.getElementById('pause-overlay').classList.remove('hidden');
+  playClick();
+}
+
+function resumeJourney() {
+  state.journey.isPaused = false;
+  document.getElementById('pause-overlay').classList.add('hidden');
+  startAmbientMusic();
+  playClick();
+}
+
+function saveAndQuitJourney() {
+  // Salva o estado atual e volta ao menu sem perder a jornada
+  saveState();
+  document.getElementById('pause-overlay').classList.add('hidden');
+  showScreen('screen-menu');
+  showToast('💾', 'Jornada Salva!', 'Volte quando quiser continuar. O progresso está salvo.');
+}
+
+function confirmQuitJourney() {
+  confirmAction(
+    'Abandonar Jornada?',
+    '⚠️ Seu progresso ATUAL nesta jornada será perdido. Suas conquistas e estatísticas permanecem. Tem certeza?',
+    () => {
+      stopAmbientMusic();
+      state.journey = {
+        day: 1, maxDays: 10,
+        autocontrole: 50, sabedoria: 50, paz: 50,
+        usedEvents: [], currentEvent: null, isPaused: false
+      };
+      showScreen('screen-menu');
+      showToast('❌', 'Jornada Abandonada', 'Você pode começar uma nova a qualquer momento');
+    }
+  );
 }
 
 // ============================================
@@ -1637,12 +2007,9 @@ function showMillionaireQuestion() {
   const choicesDiv = document.getElementById('millionaire-choices');
   choicesDiv.innerHTML = '';
   
-  // No modo milhão, a resposta correta é a "good". As outras 3 são alternativas erradas.
-  // Se a pergunta tiver menos de 4 escolhas, completamos com outras perguntas.
   let choices = [...event.choices];
   const correctIdx = choices.findIndex(c => c.quality === 'good');
   
-  // Garantir 4 escolhas
   while (choices.length < 4) {
     const filler = state.questions.find(q => 
       q.id !== event.id && 
@@ -1658,14 +2025,12 @@ function showMillionaireQuestion() {
     } else break;
   }
   
-  // Se ainda não tem 4, duplica com variações
   while (choices.length < 4) {
     const base = choices.find(c => c.quality !== 'good');
     if (base) choices.push({ ...base, text: base.text + ' (variação)' });
     else break;
   }
   
-  // Embaralhar
   const indexed = choices.map((c, i) => ({ choice: c, isCorrect: i === correctIdx }));
   const shuffled = indexed.sort(() => Math.random() - 0.5);
   
@@ -1709,7 +2074,6 @@ function selectMillionaireChoice(idx) {
     }, 2500);
   } else {
     buttons[idx].classList.add('wrong');
-    // Mostrar a correta
     state.millionaire.shuffledChoices.forEach((item, i) => {
       if (item.isCorrect) buttons[i].classList.add('correct');
     });
@@ -1740,7 +2104,6 @@ function useHelp(type) {
       showMillionaireQuestion();
     }
   } else if (type === 'universal') {
-    // Mostra % de cada alternativa
     const buttons = document.querySelectorAll('#millionaire-choices .choice-btn');
     const percs = state.millionaire.shuffledChoices.map(item => 
       item.isCorrect ? Math.floor(Math.random() * 20) + 70 : Math.floor(Math.random() * 20) + 5
@@ -1751,7 +2114,6 @@ function useHelp(type) {
       b.innerHTML += ` <span class="float-right text-blue-400 font-bold">${normalized[i]}%</span>`;
     });
   } else if (type === 'sage') {
-    // Elimina 2 erradas
     const buttons = document.querySelectorAll('#millionaire-choices .choice-btn');
     const wrongIdxs = state.millionaire.shuffledChoices
       .map((item, i) => ({ item, i }))
@@ -1763,7 +2125,6 @@ function useHelp(type) {
       buttons[i].style.opacity = '0.3';
     });
   } else if (type === 'cards') {
-    // Revela a correta brevemente
     const buttons = document.querySelectorAll('#millionaire-choices .choice-btn');
     const correctIdx = state.millionaire.shuffledChoices.findIndex(x => x.isCorrect);
     buttons[correctIdx].classList.add('correct');
@@ -1799,6 +2160,17 @@ function stopMillionaire() {
     () => {
       state.millionaire.stopped = true;
       endMillionaire(true);
+    }
+  );
+}
+
+function confirmQuitMillionaire() {
+  confirmAction(
+    'Desistir do Show?',
+    '⚠️ Você vai perder todo o prêmio acumulado! Suas estatísticas permanecem. Tem certeza?',
+    () => {
+      stopAmbientMusic();
+      endMillionaire(false);
     }
   );
 }
@@ -2067,7 +2439,7 @@ function exportData(type) {
   else if (type === 'custom') data = state.questions.filter(q => q.custom);
   else data = state.questions.filter(q => !q.custom);
   
-  const json = JSON.stringify({ questions: data, exportedAt: new Date().toISOString(), version: '2.0' }, null, 2);
+  const json = JSON.stringify({ questions: data, exportedAt: new Date().toISOString(), version: '0.2' }, null, 2);
   const blob = new Blob([json], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -2147,21 +2519,60 @@ function resetToDefaults() {
 }
 
 // ============================================
-// CONQUISTAS
+// CONQUISTAS - CORRIGIDO
 // ============================================
 function checkAchievements() {
-  let newAchievements = false;
+  let newAchievements = [];
+  
   ACHIEVEMENTS.forEach(a => {
-    if (!state.stats.achievements.includes(a.id) && a.check(state.stats)) {
-      state.stats.achievements.push(a.id);
-      newAchievements = true;
-      setTimeout(() => {
-        showToast(a.icon, '🏆 Conquista Desbloqueada!', a.title);
-        playLevelUp();
-      }, 500);
+    if (!state.stats.achievements.includes(a.id)) {
+      // Chamamos a função check passando state.stats
+      // Para achievements que precisam do state completo, usamos a referência global
+      let unlocked = false;
+      try {
+        unlocked = a.check(state.stats);
+      } catch(e) {
+        unlocked = false;
+      }
+      
+      if (unlocked) {
+        state.stats.achievements.push(a.id);
+        newAchievements.push(a);
+      }
     }
   });
-  if (newAchievements) saveState();
+  
+  // Mostra banners para novas conquistas
+  if (newAchievements.length > 0) {
+    saveState();
+    newAchievements.forEach((a, index) => {
+      setTimeout(() => {
+        showAchievementBanner(a);
+        playLevelUp();
+      }, index * 800 + 500);
+    });
+  }
+}
+
+function showAchievementBanner(achievement) {
+  const banner = document.createElement('div');
+  banner.className = 'achievement-banner';
+  banner.innerHTML = `
+    <div class="flex items-center gap-4">
+      <div class="text-5xl animate-badge-pop">${achievement.icon}</div>
+      <div>
+        <div class="text-xs font-bold text-amber-900 uppercase tracking-wider">🏆 Conquista Desbloqueada!</div>
+        <div class="text-xl font-bold text-black title-font">${achievement.title}</div>
+        <div class="text-sm text-amber-900">${achievement.desc}</div>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(banner);
+  
+  setTimeout(() => {
+    banner.style.animation = 'slideUp 0.6s ease-out reverse';
+    setTimeout(() => banner.remove(), 600);
+  }, 4000);
 }
 
 function renderAchievements() {
@@ -2225,11 +2636,138 @@ function resetAllProgress() {
     () => {
       localStorage.removeItem('wisdom_game_state');
       state.questions = [...DEFAULT_QUESTIONS];
-      state.stats = { journeysCompleted: 0, millionaireWins: 0, totalMoney: 0, achievements: [] };
+      state.stats = { 
+        journeysCompleted: 0, 
+        millionaireWins: 0, 
+        totalMoney: 0, 
+        achievements: [],
+        lastJourneyPerfect: false,
+        totalCorrect: 0,
+        playedAll: false
+      };
       saveState();
       showToast('🔄', 'Tudo Resetado', 'Jogo voltou ao estado inicial');
     }
   );
+}
+
+// ============================================
+// DIVULGAÇÃO / SHARE
+// ============================================
+const GAME_URL = 'https://walneynf.github.io/sabedoria/';
+const GAME_TITLE = 'O Caminho da Sabedoria';
+
+function copyLink() {
+  const input = document.getElementById('game-url');
+  input.select();
+  document.execCommand('copy');
+  
+  const btn = document.getElementById('copy-link-btn');
+  btn.classList.add('copied');
+  btn.innerHTML = '✅ Copiado!';
+  
+  setTimeout(() => {
+    btn.classList.remove('copied');
+    btn.innerHTML = '📋 Copiar';
+  }, 2000);
+  
+  showToast('🔗', 'Link Copiado!', 'Compartilhe com seus amigos');
+}
+
+function copyText() {
+  const text = `🎮 ${GAME_TITLE} - Um jogo que une estoicismo e sabedoria bíblica! Teste seu autocontrole em 10 dias de provações. Jogue agora: ${GAME_URL}`;
+  navigator.clipboard.writeText(text).then(() => {
+    showToast('📋', 'Texto Copiado!', 'Cole onde quiser compartilhar');
+  });
+}
+
+function shareWhatsApp() {
+  const text = encodeURIComponent(`🎮 *O Caminho da Sabedoria*\n\nTeste sua sabedoria emocional em situações reais! 10 dias de provações, ensinamentos estoicos e bíblicos.\n\n⚖️ "Quem domina o seu espírito é melhor do que o que toma uma cidade."\n\n👉 Jogue agora: ${GAME_URL}`);
+  window.open(`https://wa.me/?text=${text}`, '_blank');
+}
+
+function shareFacebook() {
+  window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(GAME_URL)}`, '_blank');
+}
+
+function shareTwitter() {
+  const text = encodeURIComponent(`🎮 Descobri "O Caminho da Sabedoria" - um jogo incrível que une estoicismo e Bíblia! Teste seu autocontrole: ${GAME_URL} ⚖️`);
+  window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
+}
+
+function shareTelegram() {
+  const text = encodeURIComponent(`🎮 O Caminho da Sabedoria - Jogue e aprenda sobre autocontrole! ${GAME_URL}`);
+  window.open(`https://t.me/share/url?url=${encodeURIComponent(GAME_URL)}&text=${text}`, '_blank');
+}
+
+function shareLinkedIn() {
+  window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(GAME_URL)}`, '_blank');
+}
+
+function shareEmail() {
+  const subject = encodeURIComponent('Conheça: O Caminho da Sabedoria');
+  const body = encodeURIComponent(`Olá!\n\nQuero te convidar para jogar "O Caminho da Sabedoria", um jogo educativo que combina ensinamentos da Filosofia Estoica e da Bíblia Sagrada.\n\n🎮 Jogue aqui: ${GAME_URL}\n\n⚖️ "Quem domina o seu espírito é melhor do que o que toma uma cidade."\n\nAbraço!`);
+  window.location.href = `mailto:?subject=${subject}&body=${body}`;
+}
+
+function shareDiscord() {
+  const text = `🎮 **O Caminho da Sabedoria**\nUm jogo que une estoicismo e sabedoria bíblica!\n\n👉 ${GAME_URL}\n\n⚖️ Teste seu autocontrole em 10 dias de provações!`;
+  navigator.clipboard.writeText(text).then(() => {
+    showToast('📋', 'Copiado para Discord!', 'Cole no seu servidor Discord');
+  });
+}
+
+function copyShareMessage(element) {
+  const text = element.querySelector('p').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    showToast('📋', 'Mensagem Copiada!', 'Cole onde quiser compartilhar');
+    element.style.background = 'linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(5, 150, 105, 0.2) 100%)';
+    setTimeout(() => {
+      element.style.background = '';
+    }, 1500);
+  });
+}
+
+function renderShareStats() {
+  const container = document.getElementById('share-stats');
+  container.innerHTML = `
+    <div class="bg-black/60 rounded-lg p-3 border border-amber-900/30 text-center">
+      <div class="text-2xl mb-1">🛤️</div>
+      <div class="text-amber-400 font-bold">${state.stats.journeysCompleted}</div>
+      <div class="text-xs text-gray-400">Jornadas</div>
+    </div>
+    <div class="bg-black/60 rounded-lg p-3 border border-amber-900/30 text-center">
+      <div class="text-2xl mb-1">🏆</div>
+      <div class="text-amber-400 font-bold">${state.stats.achievements.length}</div>
+      <div class="text-xs text-gray-400">Conquistas</div>
+    </div>
+    <div class="bg-black/60 rounded-lg p-3 border border-amber-900/30 text-center">
+      <div class="text-2xl mb-1">💰</div>
+      <div class="text-amber-400 font-bold">${formatMoney(state.stats.totalMoney)}</div>
+      <div class="text-xs text-gray-400">Total Ganho</div>
+    </div>
+    <div class="bg-black/60 rounded-lg p-3 border border-amber-900/30 text-center">
+      <div class="text-2xl mb-1">🎯</div>
+      <div class="text-amber-400 font-bold">${state.stats.totalCorrect || 0}</div>
+      <div class="text-xs text-gray-400">Acertos</div>
+    </div>
+  `;
+}
+
+function copyStats() {
+  const text = `📊 Minhas estatísticas em "O Caminho da Sabedoria":\n\n🛤️ Jornadas completas: ${state.stats.journeysCompleted}\n🏆 Conquistas: ${state.stats.achievements.length}/${ACHIEVEMENTS.length}\n💰 Total ganho: ${formatMoney(state.stats.totalMoney)}\n🎯 Acertos no Show: ${state.stats.totalCorrect || 0}\n\n👉 Jogue também: ${GAME_URL}`;
+  navigator.clipboard.writeText(text).then(() => {
+    showToast('📊', 'Estatísticas Copiadas!', 'Mostre seu progresso ao mundo');
+  });
+}
+
+function shareResult() {
+  const title = document.getElementById('end-title').textContent;
+  const desc = document.getElementById('end-description').textContent;
+  const text = `🏆 Completei "O Caminho da Sabedoria"!\n\n🎖️ Título: ${title}\n\n${desc}\n\n👉 Jogue você também: ${GAME_URL}`;
+  navigator.clipboard.writeText(text).then(() => {
+    showToast('📣', 'Resultado Copiado!', 'Compartilhe sua conquista');
+  });
 }
 
 // ============================================
@@ -2264,17 +2802,6 @@ function closeConfirm() {
   document.getElementById('modal-confirm').classList.add('hidden');
 }
 
-function confirmQuit() {
-  confirmAction(
-    'Sair do Jogo?',
-    'Seu progresso atual será perdido. Tem certeza?',
-    () => {
-      stopAmbientMusic();
-      showScreen('screen-menu');
-    }
-  );
-}
-
 function launchConfetti() {
   if (!state.settings.animationsEnabled) return;
   const colors = ['#d4af37', '#f4d03f', '#10b981', '#3b82f6', '#a855f7', '#ef4444'];
@@ -2302,6 +2829,13 @@ document.addEventListener('DOMContentLoaded', () => {
     initAudio();
     if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
   }, { once: true });
+  
+  // Atalho de teclado ESC para pausar jornada
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && document.getElementById('screen-journey').classList.contains('active')) {
+      pauseJourney();
+    }
+  });
 });
 </script>
 
