@@ -1,0 +1,2309 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>O Caminho da Sabedoria - Edição Completa</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/inter@latest/latin-400-normal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/cinzel@latest/latin-700-normal.css">
+<style>
+  :root {
+    --gold: #d4af37;
+    --gold-light: #f4d03f;
+    --gold-dark: #8b7500;
+  }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: radial-gradient(ellipse at top, #1a1a2e 0%, #0f0f1e 50%, #000000 100%);
+    min-height: 100vh;
+    color: #e8e8e8;
+    overflow-x: hidden;
+  }
+  .title-font { font-family: 'Cinzel', serif; }
+  .glow { text-shadow: 0 0 20px rgba(212, 175, 55, 0.5); }
+  .card-glow { box-shadow: 0 0 40px rgba(212, 175, 55, 0.15); }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeInScale {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.3); }
+    50% { box-shadow: 0 0 40px rgba(212, 175, 55, 0.7); }
+  }
+  @keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    75% { transform: translateX(8px); }
+  }
+  @keyframes confetti {
+    0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+  @keyframes slideInRight {
+    from { opacity: 0; transform: translateX(50px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  .animate-fade { animation: fadeIn 0.8s ease-out; }
+  .animate-fade-scale { animation: fadeInScale 0.5s ease-out; }
+  .animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+  .animate-float { animation: float 3s ease-in-out infinite; }
+  .animate-shake { animation: shake 0.5s ease-in-out; }
+  .animate-slide-right { animation: slideInRight 0.5s ease-out; }
+  .shimmer-text {
+    background: linear-gradient(90deg, #d4af37 0%, #f4d03f 50%, #d4af37 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 3s linear infinite;
+  }
+  .stat-bar {
+    background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+  }
+  .choice-btn {
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, rgba(30, 30, 50, 0.8) 0%, rgba(20, 20, 40, 0.8) 100%);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+  }
+  .choice-btn:hover:not(:disabled) {
+    transform: translateY(-3px);
+    border-color: rgba(212, 175, 55, 0.8);
+    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+  }
+  .choice-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .choice-btn.correct {
+    border-color: #10b981 !important;
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.3) 0%, rgba(5, 150, 105, 0.3) 100%) !important;
+    box-shadow: 0 0 30px rgba(16, 185, 129, 0.5) !important;
+  }
+  .choice-btn.wrong {
+    border-color: #ef4444 !important;
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.3) 0%, rgba(220, 38, 38, 0.3) 100%) !important;
+    box-shadow: 0 0 30px rgba(239, 68, 68, 0.5) !important;
+  }
+  .progress-fill {
+    background: linear-gradient(90deg, #d4af37 0%, #f4d03f 100%);
+    transition: width 0.8s ease;
+  }
+  .scroll-container::-webkit-scrollbar { width: 6px; }
+  .scroll-container::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); }
+  .scroll-container::-webkit-scrollbar-thumb { background: rgba(212, 175, 55, 0.5); border-radius: 3px; }
+  .menu-btn {
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, rgba(30, 30, 50, 0.9) 0%, rgba(20, 20, 40, 0.9) 100%);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+  }
+  .menu-btn:hover {
+    transform: translateY(-5px) scale(1.02);
+    border-color: rgba(212, 175, 55, 0.8);
+    box-shadow: 0 15px 40px rgba(212, 175, 55, 0.3);
+  }
+  .category-card {
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .category-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2), transparent);
+    transition: left 0.5s ease;
+  }
+  .category-card:hover::before { left: 100%; }
+  .category-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(212, 175, 55, 0.8);
+    box-shadow: 0 15px 40px rgba(212, 175, 55, 0.3);
+  }
+  .confetti-piece {
+    position: fixed;
+    width: 10px; height: 10px;
+    animation: confetti 3s linear forwards;
+    z-index: 9999;
+    pointer-events: none;
+  }
+  .modal-backdrop {
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+  }
+  .icon-circle {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(212, 175, 55, 0.05) 100%);
+    border: 2px solid rgba(212, 175, 55, 0.4);
+    margin: 0 auto 1rem;
+  }
+  .tooltip {
+    position: relative;
+  }
+  .tooltip:hover::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.9);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 100;
+  }
+  .tab-btn.active {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(212, 175, 55, 0.1) 100%);
+    border-color: rgba(212, 175, 55, 0.8);
+    color: #f4d03f;
+  }
+  .money-display {
+    font-family: 'Cinzel', serif;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(139, 117, 0, 0.2) 100%);
+    border: 2px solid rgba(212, 175, 55, 0.5);
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    text-align: center;
+  }
+  input, textarea, select {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    color: #e8e8e8;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    width: 100%;
+    transition: all 0.3s;
+  }
+  input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: rgba(212, 175, 55, 0.8);
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+  }
+  .screen { display: none; }
+  .screen.active { display: block; }
+</style>
+</head>
+<body>
+
+<div id="app" class="min-h-screen p-4">
+
+  <!-- MENU PRINCIPAL -->
+  <div id="screen-menu" class="screen active max-w-5xl mx-auto py-8 animate-fade">
+    <div class="text-center mb-8">
+      <div class="text-7xl mb-4 animate-float">⚖️</div>
+      <h1 class="title-font text-5xl md:text-6xl font-bold shimmer-text mb-4">
+        O Caminho da Sabedoria
+      </h1>
+      <p class="text-lg text-gray-300 italic">"Quem domina o seu espírito é melhor do que o que toma uma cidade."</p>
+      <p class="text-sm text-gray-400 mt-2">— Provérbios 16:32</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+      <button onclick="showScreen('screen-journey-info')" class="menu-btn rounded-2xl p-6 text-left">
+        <div class="text-4xl mb-2">🛤️</div>
+        <h3 class="title-font text-xl text-amber-400 mb-2">Modo Jornada</h3>
+        <p class="text-sm text-gray-300">Viva 10 dias de provações. Suas escolhas moldam seu caráter. Aprenda com os estoicos e a Bíblia.</p>
+      </button>
+
+      <button onclick="showScreen('screen-millionaire-setup')" class="menu-btn rounded-2xl p-6 text-left">
+        <div class="text-4xl mb-2">💰</div>
+        <h3 class="title-font text-xl text-amber-400 mb-2">Show da Sabedoria</h3>
+        <p class="text-sm text-gray-300">Estilo Show do Milhão! Responda perguntas, acumule prêmios e use seus ajudes.</p>
+      </button>
+
+      <button onclick="showScreen('screen-editor')" class="menu-btn rounded-2xl p-6 text-left">
+        <div class="text-4xl mb-2">✏️</div>
+        <h3 class="title-font text-xl text-amber-400 mb-2">Editor de Perguntas</h3>
+        <p class="text-sm text-gray-300">Crie suas próprias perguntas e compartilhe com outros jogadores.</p>
+      </button>
+
+      <button onclick="showScreen('screen-data')" class="menu-btn rounded-2xl p-6 text-left">
+        <div class="text-4xl mb-2">💾</div>
+        <h3 class="title-font text-xl text-amber-400 mb-2">Banco de Dados</h3>
+        <p class="text-sm text-gray-300">Exporte e importe perguntas em JSON. Gerencie seu acervo personalizado.</p>
+      </button>
+
+      <button onclick="showScreen('screen-achievements')" class="menu-btn rounded-2xl p-6 text-left">
+        <div class="text-4xl mb-2">🏆</div>
+        <h3 class="title-font text-xl text-amber-400 mb-2">Conquistas</h3>
+        <p class="text-sm text-gray-300">Veja suas conquistas desbloqueadas e seu progresso geral.</p>
+      </button>
+
+      <button onclick="showScreen('screen-settings')" class="menu-btn rounded-2xl p-6 text-left">
+        <div class="text-4xl mb-2">⚙️</div>
+        <h3 class="title-font text-xl text-amber-400 mb-2">Configurações</h3>
+        <p class="text-sm text-gray-300">Ajuste som, música e outras preferências do jogo.</p>
+      </button>
+    </div>
+
+    <div class="text-center">
+      <button onclick="showScreen('screen-credits')" class="text-amber-400 hover:text-amber-300 text-sm underline">
+        Créditos & Sobre
+      </button>
+    </div>
+  </div>
+
+  <!-- INFO MODO JORNADA -->
+  <div id="screen-journey-info" class="screen max-w-3xl mx-auto py-8 animate-fade">
+    <button onclick="showScreen('screen-menu')" class="mb-4 text-amber-400 hover:text-amber-300">← Voltar</button>
+    <div class="bg-black/50 backdrop-blur-sm rounded-2xl p-8 card-glow border border-amber-900/30">
+      <div class="text-5xl text-center mb-4">🛤️</div>
+      <h2 class="title-font text-3xl text-amber-400 text-center mb-6">Modo Jornada</h2>
+      
+      <div class="space-y-4 text-gray-200 mb-6">
+        <div class="flex gap-3">
+          <div class="text-2xl">📖</div>
+          <div><strong class="text-amber-400">Como funciona:</strong> Você viverá 10 dias de situações aleatórias da vida real. Cada dia traz um desafio emocional diferente.</div>
+        </div>
+        <div class="flex gap-3">
+          <div class="text-2xl">🎯</div>
+          <div><strong class="text-amber-400">Objetivo:</strong> Manter alto seus atributos de Autocontrole, Sabedoria e Paz Interior através de escolhas sábias.</div>
+        </div>
+        <div class="flex gap-3">
+          <div class="text-2xl">📚</div>
+          <div><strong class="text-amber-400">Aprendizado:</strong> Cada escolha traz ensinamentos dos estoicos (Marco Aurélio, Epicteto, Sêneca) e da Bíblia Sagrada.</div>
+        </div>
+        <div class="flex gap-3">
+          <div class="text-2xl">⭐</div>
+          <div><strong class="text-amber-400">Final:</strong> Dependendo das suas escolhas, você recebe um título final que reflete seu caráter.</div>
+        </div>
+      </div>
+
+      <div class="border-l-4 border-amber-500 pl-4 italic text-amber-200 mb-6">
+        "Não são as coisas que nos perturbam, mas a opinião que temos sobre elas." — Epicteto
+      </div>
+
+      <button onclick="startJourney()" class="w-full bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-black font-bold py-4 rounded-xl transition-all">
+        Iniciar Jornada →
+      </button>
+    </div>
+  </div>
+
+  <!-- MODO JORNADA -->
+  <div id="screen-journey" class="screen max-w-4xl mx-auto py-8">
+    <div class="grid grid-cols-3 gap-3 mb-6">
+      <div class="bg-black/40 backdrop-blur-sm rounded-xl p-4 border border-amber-900/30">
+        <div class="text-xs text-gray-400 mb-1">🛡️ Autocontrole</div>
+        <div class="stat-bar rounded-full h-2 overflow-hidden">
+          <div id="bar-autocontrole" class="progress-fill h-full" style="width: 50%"></div>
+        </div>
+        <div id="val-autocontrole" class="text-amber-400 font-bold mt-1">50</div>
+      </div>
+      <div class="bg-black/40 backdrop-blur-sm rounded-xl p-4 border border-amber-900/30">
+        <div class="text-xs text-gray-400 mb-1">📖 Sabedoria</div>
+        <div class="stat-bar rounded-full h-2 overflow-hidden">
+          <div id="bar-sabedoria" class="progress-fill h-full" style="width: 50%"></div>
+        </div>
+        <div id="val-sabedoria" class="text-amber-400 font-bold mt-1">50</div>
+      </div>
+      <div class="bg-black/40 backdrop-blur-sm rounded-xl p-4 border border-amber-900/30">
+        <div class="text-xs text-gray-400 mb-1">🕊️ Paz Interior</div>
+        <div class="stat-bar rounded-full h-2 overflow-hidden">
+          <div id="bar-paz" class="progress-fill h-full" style="width: 50%"></div>
+        </div>
+        <div id="val-paz" class="text-amber-400 font-bold mt-1">50</div>
+      </div>
+    </div>
+
+    <div class="text-center mb-4">
+      <span class="text-amber-400 title-font text-lg">Dia <span id="day-counter">1</span> de 10</span>
+    </div>
+
+    <div id="event-container" class="bg-black/50 backdrop-blur-sm rounded-2xl p-8 card-glow border border-amber-900/30 animate-fade">
+      <div id="event-icon" class="text-5xl mb-4 text-center">🌅</div>
+      <h2 id="event-title" class="title-font text-2xl text-amber-400 mb-4 text-center"></h2>
+      <p id="event-description" class="text-gray-200 text-lg leading-relaxed mb-8 text-center"></p>
+      <div id="choices" class="space-y-3"></div>
+    </div>
+
+    <div id="feedback-container" class="hidden mt-6 bg-black/50 backdrop-blur-sm rounded-2xl p-6 border border-amber-900/30 animate-fade">
+      <div id="feedback-icon" class="text-4xl text-center mb-3"></div>
+      <p id="feedback-text" class="text-gray-200 text-center leading-relaxed mb-4"></p>
+      <div id="feedback-quote" class="border-l-4 border-amber-500 pl-4 italic text-amber-200 text-center"></div>
+      <button onclick="nextJourneyEvent()" class="mt-6 w-full bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-black font-bold py-3 rounded-xl transition-all">
+        Continuar →
+      </button>
+    </div>
+
+    <button onclick="confirmQuit()" class="mt-4 w-full text-gray-400 hover:text-gray-200 text-sm">← Abandonar Jornada</button>
+  </div>
+
+  <!-- FIM DA JORNADA -->
+  <div id="screen-journey-end" class="screen max-w-3xl mx-auto py-8 text-center animate-fade">
+    <div id="end-icon" class="text-7xl mb-6"></div>
+    <h1 id="end-title" class="title-font text-4xl md:text-5xl font-bold shimmer-text mb-6"></h1>
+    <div class="bg-black/40 backdrop-blur-sm rounded-2xl p-8 card-glow border border-amber-900/30 mb-6">
+      <p id="end-description" class="text-lg text-gray-200 leading-relaxed mb-6"></p>
+      <div id="end-stats" class="grid grid-cols-3 gap-4 mb-6"></div>
+      <div id="end-quote" class="border-l-4 border-amber-500 pl-4 italic text-amber-200 text-left"></div>
+    </div>
+    <div class="flex gap-3 justify-center">
+      <button onclick="showScreen('screen-menu')" class="bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-black font-bold py-3 px-8 rounded-full transition-all">
+        Menu Principal
+      </button>
+      <button onclick="startJourney()" class="bg-black/40 border border-amber-900/50 hover:border-amber-500 text-amber-400 font-bold py-3 px-8 rounded-full transition-all">
+        Jogar Novamente
+      </button>
+    </div>
+  </div>
+
+  <!-- SETUP SHOW DA SABEDORIA -->
+  <div id="screen-millionaire-setup" class="screen max-w-3xl mx-auto py-8 animate-fade">
+    <button onclick="showScreen('screen-menu')" class="mb-4 text-amber-400 hover:text-amber-300">← Voltar</button>
+    <div class="bg-black/50 backdrop-blur-sm rounded-2xl p-8 card-glow border border-amber-900/30">
+      <div class="text-5xl text-center mb-4 animate-float">💰</div>
+      <h2 class="title-font text-3xl text-amber-400 text-center mb-6">Show da Sabedoria</h2>
+      
+      <p class="text-gray-300 text-center mb-6">
+        Estilo Show do Milhão! Responda perguntas sobre sabedoria emocional. Cada resposta correta aumenta seu prêmio. 
+        Você pode parar a qualquer momento e levar o dinheiro acumulado. Mas cuidado: erre e perde tudo!
+      </p>
+
+      <div class="mb-4">
+        <label class="block text-amber-400 mb-2 font-semibold">Escolha a Categoria:</label>
+        <select id="millionaire-category" class="text-lg">
+          <option value="all">🎲 Todas as Categorias</option>
+          <option value="autocontrole">😤 Autocontrole</option>
+          <option value="humildade">🙇 Humildade</option>
+          <option value="perdao">💝 Perdão</option>
+          <option value="justica">⚖️ Justiça</option>
+          <option value="paciencia">⏳ Paciência</option>
+          <option value="fe">🙏 Fé</option>
+        </select>
+      </div>
+
+      <div class="mb-6">
+        <label class="block text-amber-400 mb-2 font-semibold">Nível de Dificuldade:</label>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+          <button onclick="setMillionaireDifficulty(1, this)" class="difficulty-btn bg-black/40 border border-green-500/50 text-green-400 py-2 rounded-lg hover:bg-green-500/10" data-diff="1">
+            🌱 Aprendiz
+          </button>
+          <button onclick="setMillionaireDifficulty(2, this)" class="difficulty-btn bg-black/40 border border-blue-500/50 text-blue-400 py-2 rounded-lg hover:bg-blue-500/10" data-diff="2">
+            📘 Discípulo
+          </button>
+          <button onclick="setMillionaireDifficulty(3, this)" class="difficulty-btn bg-black/40 border border-purple-500/50 text-purple-400 py-2 rounded-lg hover:bg-purple-500/10" data-diff="3">
+            🎓 Sábio
+          </button>
+          <button onclick="setMillionaireDifficulty(4, this)" class="difficulty-btn bg-black/40 border border-amber-500/50 text-amber-400 py-2 rounded-lg hover:bg-amber-500/10" data-diff="4">
+            👑 Mestre
+          </button>
+        </div>
+      </div>
+
+      <div class="bg-black/40 rounded-xl p-4 border border-amber-900/30 mb-6">
+        <h4 class="text-amber-400 font-semibold mb-2">💡 Seus Ajudes:</h4>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-sm">
+          <div class="text-gray-300">🎯 Pular (1x)</div>
+          <div class="text-gray-300">🌐 Universal (1x)</div>
+          <div class="text-gray-300">🎓 Sábio (1x)</div>
+          <div class="text-gray-300">🃏 Cartas Marcadas (1x)</div>
+        </div>
+      </div>
+
+      <div class="bg-black/40 rounded-xl p-4 border border-amber-900/30 mb-6">
+        <h4 class="text-amber-400 font-semibold mb-2">💰 Escala de Prêmios:</h4>
+        <div class="grid grid-cols-5 gap-1 text-xs text-center">
+          <div class="bg-green-900/30 p-2 rounded">R$1k</div>
+          <div class="bg-green-900/30 p-2 rounded">R$2k</div>
+          <div class="bg-green-900/30 p-2 rounded">R$5k</div>
+          <div class="bg-green-900/30 p-2 rounded">R$10k</div>
+          <div class="bg-green-900/30 p-2 rounded">R$20k</div>
+          <div class="bg-blue-900/30 p-2 rounded">R$50k</div>
+          <div class="bg-blue-900/30 p-2 rounded">R$100k</div>
+          <div class="bg-blue-900/30 p-2 rounded">R$200k</div>
+          <div class="bg-blue-900/30 p-2 rounded">R$500k</div>
+          <div class="bg-purple-900/30 p-2 rounded">R$1M</div>
+        </div>
+      </div>
+
+      <button onclick="startMillionaire()" class="w-full bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-black font-bold py-4 rounded-xl transition-all">
+        Começar o Show! 🎬
+      </button>
+    </div>
+  </div>
+
+  <!-- SHOW DA SABEDORIA - JOGO -->
+  <div id="screen-millionaire" class="screen max-w-4xl mx-auto py-8">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+      <div class="money-display">
+        <div class="text-xs text-gray-400">Prêmio Atual</div>
+        <div id="millionaire-prize" class="text-2xl text-amber-400 font-bold">R$ 0</div>
+      </div>
+      <div class="money-display">
+        <div class="text-xs text-gray-400">Pergunta</div>
+        <div id="millionaire-qnum" class="text-2xl text-amber-400 font-bold">1/10</div>
+      </div>
+      <div class="money-display">
+        <div class="text-xs text-gray-400">Categoria</div>
+        <div id="millionaire-cat" class="text-lg text-amber-400 font-bold">—</div>
+      </div>
+      <div class="money-display">
+        <div class="text-xs text-gray-400">Nível</div>
+        <div id="millionaire-diff" class="text-lg text-amber-400 font-bold">—</div>
+      </div>
+    </div>
+
+    <div id="millionaire-event" class="bg-black/50 backdrop-blur-sm rounded-2xl p-8 card-glow border border-amber-900/30 animate-fade">
+      <div id="millionaire-icon" class="text-5xl mb-4 text-center"></div>
+      <div class="text-center mb-4">
+        <span id="millionaire-difficulty-label" class="inline-block px-3 py-1 rounded-full text-xs font-bold"></span>
+      </div>
+      <h2 id="millionaire-title" class="title-font text-2xl text-amber-400 mb-4 text-center"></h2>
+      <p id="millionaire-description" class="text-gray-200 text-lg leading-relaxed mb-8 text-center"></p>
+      <div id="millionaire-choices" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+    </div>
+
+    <div id="millionaire-helps" class="grid grid-cols-4 gap-2 mt-4">
+      <button onclick="useHelp('skip')" id="help-skip" class="bg-black/40 border border-amber-900/30 hover:border-amber-500 text-amber-400 py-2 rounded-lg text-sm transition-all">
+        🎯 Pular
+      </button>
+      <button onclick="useHelp('universal')" id="help-universal" class="bg-black/40 border border-amber-900/30 hover:border-amber-500 text-amber-400 py-2 rounded-lg text-sm transition-all">
+        🌐 Universal
+      </button>
+      <button onclick="useHelp('sage')" id="help-sage" class="bg-black/40 border border-amber-900/30 hover:border-amber-500 text-amber-400 py-2 rounded-lg text-sm transition-all">
+        🎓 Sábio
+      </button>
+      <button onclick="useHelp('cards')" id="help-cards" class="bg-black/40 border border-amber-900/30 hover:border-amber-500 text-amber-400 py-2 rounded-lg text-sm transition-all">
+        🃏 Cartas
+      </button>
+    </div>
+
+    <div class="flex gap-2 mt-4">
+      <button id="btn-stop" onclick="stopMillionaire()" class="flex-1 bg-gradient-to-r from-green-700 to-green-600 hover:from-green-600 hover:to-green-500 text-white font-bold py-3 rounded-xl transition-all">
+        💰 Parar e Levar
+      </button>
+      <button onclick="confirmQuit()" class="bg-black/40 border border-red-900/50 hover:border-red-500 text-red-400 font-bold py-3 px-6 rounded-xl transition-all">
+        Desistir
+      </button>
+    </div>
+  </div>
+
+  <!-- FIM SHOW DA SABEDORIA -->
+  <div id="screen-millionaire-end" class="screen max-w-3xl mx-auto py-8 text-center animate-fade">
+    <div id="millionaire-end-icon" class="text-7xl mb-6"></div>
+    <h1 id="millionaire-end-title" class="title-font text-4xl md:text-5xl font-bold shimmer-text mb-6"></h1>
+    <div class="bg-black/40 backdrop-blur-sm rounded-2xl p-8 card-glow border border-amber-900/30 mb-6">
+      <p id="millionaire-end-desc" class="text-lg text-gray-200 leading-relaxed mb-6"></p>
+      <div class="money-display inline-block mb-6">
+        <div class="text-xs text-gray-400">Prêmio Final</div>
+        <div id="millionaire-end-prize" class="text-4xl text-amber-400 font-bold">R$ 0</div>
+      </div>
+      <div id="millionaire-end-stats" class="grid grid-cols-2 gap-4 mb-6"></div>
+      <div id="millionaire-end-quote" class="border-l-4 border-amber-500 pl-4 italic text-amber-200 text-left"></div>
+    </div>
+    <div class="flex gap-3 justify-center flex-wrap">
+      <button onclick="showScreen('screen-menu')" class="bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-black font-bold py-3 px-8 rounded-full transition-all">
+        Menu Principal
+      </button>
+      <button onclick="showScreen('screen-millionaire-setup')" class="bg-black/40 border border-amber-900/50 hover:border-amber-500 text-amber-400 font-bold py-3 px-8 rounded-full transition-all">
+        Jogar Novamente
+      </button>
+    </div>
+  </div>
+
+  <!-- EDITOR -->
+  <div id="screen-editor" class="screen max-w-5xl mx-auto py-8 animate-fade">
+    <button onclick="showScreen('screen-menu')" class="mb-4 text-amber-400 hover:text-amber-300">← Voltar</button>
+    <div class="bg-black/50 backdrop-blur-sm rounded-2xl p-8 card-glow border border-amber-900/30">
+      <div class="text-5xl text-center mb-4">✏️</div>
+      <h2 class="title-font text-3xl text-amber-400 text-center mb-4">Editor de Perguntas</h2>
+      <p class="text-gray-300 text-center mb-6">Crie suas próprias perguntas baseadas em situações reais. Elas serão adicionadas ao jogo!</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6">
+        <div class="bg-black/40 rounded-xl p-4 border border-amber-900/30 text-center">
+          <div class="text-3xl mb-2">📝</div>
+          <div class="text-amber-400 font-bold text-xl" id="total-questions">0</div>
+          <div class="text-xs text-gray-400">Total de Perguntas</div>
+        </div>
+        <div class="bg-black/40 rounded-xl p-4 border border-amber-900/30 text-center">
+          <div class="text-3xl mb-2">✨</div>
+          <div class="text-amber-400 font-bold text-xl" id="custom-questions">0</div>
+          <div class="text-xs text-gray-400">Criadas por Você</div>
+        </div>
+        <div class="bg-black/40 rounded-xl p-4 border border-amber-900/30 text-center">
+          <div class="text-3xl mb-2">📚</div>
+          <div class="text-amber-400 font-bold text-xl" id="categories-count">6</div>
+          <div class="text-xs text-gray-400">Categorias</div>
+        </div>
+      </div>
+
+      <div class="flex gap-2 mb-6 flex-wrap">
+        <button onclick="openNewQuestion()" class="bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-black font-bold py-2 px-6 rounded-lg transition-all">
+          + Nova Pergunta
+        </button>
+        <button onclick="showScreen('screen-data')" class="bg-black/40 border border-amber-900/50 hover:border-amber-500 text-amber-400 font-bold py-2 px-6 rounded-lg transition-all">
+          💾 Importar/Exportar
+        </button>
+        <button onclick="resetToDefaults()" class="bg-black/40 border border-red-900/50 hover:border-red-500 text-red-400 font-bold py-2 px-6 rounded-lg transition-all">
+          🔄 Restaurar Padrões
+        </button>
+      </div>
+
+      <div class="mb-4">
+        <label class="block text-amber-400 mb-2">Filtrar por Categoria:</label>
+        <select id="filter-category" onchange="renderQuestionList()" class="text-lg">
+          <option value="all">Todas</option>
+          <option value="autocontrole">😤 Autocontrole</option>
+          <option value="humildade">🙇 Humildade</option>
+          <option value="perdao">💝 Perdão</option>
+          <option value="justica">⚖️ Justiça</option>
+          <option value="paciencia">⏳ Paciência</option>
+          <option value="fe">🙏 Fé</option>
+        </select>
+      </div>
+
+      <div id="question-list" class="space-y-2 max-h-96 overflow-y-auto scroll-container"></div>
+    </div>
+  </div>
+
+  <!-- MODAL EDITOR -->
+  <div id="modal-editor" class="hidden fixed inset-0 modal-backdrop z-50 flex items-center justify-center p-4">
+    <div class="bg-gradient-to-br from-gray-900 to-black rounded-2xl p-6 max-w-3xl w-full max-h-[90vh] overflow-y-auto scroll-container border border-amber-900/50">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="title-font text-2xl text-amber-400" id="editor-title">Nova Pergunta</h3>
+        <button onclick="closeEditor()" class="text-gray-400 hover:text-white text-2xl">✕</button>
+      </div>
+
+      <div class="space-y-4">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-amber-400 mb-1 text-sm">Categoria *</label>
+            <select id="q-category">
+              <option value="autocontrole">😤 Autocontrole</option>
+              <option value="humildade">🙇 Humildade</option>
+              <option value="perdao">💝 Perdão</option>
+              <option value="justica">⚖️ Justiça</option>
+              <option value="paciencia">⏳ Paciência</option>
+              <option value="fe">🙏 Fé</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-amber-400 mb-1 text-sm">Dificuldade *</label>
+            <select id="q-difficulty">
+              <option value="1">🌱 Aprendiz (Fácil)</option>
+              <option value="2">📘 Discípulo (Médio)</option>
+              <option value="3">🎓 Sábio (Difícil)</option>
+              <option value="4">👑 Mestre (Muito Difícil)</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-amber-400 mb-1 text-sm">Ícone (emoji) *</label>
+          <input type="text" id="q-icon" placeholder="Ex: 😤 💼 💔" maxlength="4">
+        </div>
+
+        <div>
+          <label class="block text-amber-400 mb-1 text-sm">Título *</label>
+          <input type="text" id="q-title" placeholder="Ex: Humilhação Pública">
+        </div>
+
+        <div>
+          <label class="block text-amber-400 mb-1 text-sm">Descrição da Situação *</label>
+          <textarea id="q-description" rows="3" placeholder="Descreva a situação que o jogador vai enfrentar..."></textarea>
+        </div>
+
+        <div class="border-t border-amber-900/30 pt-4">
+          <h4 class="text-amber-400 font-semibold mb-3">Escolhas (mínimo 2, máximo 4) *</h4>
+          <div id="choices-editor" class="space-y-3"></div>
+          <button onclick="addChoiceToEditor()" class="mt-3 text-amber-400 hover:text-amber-300 text-sm">+ Adicionar escolha</button>
+        </div>
+
+        <div class="bg-blue-900/20 border border-blue-500/30 rounded-lg p-3 text-sm text-blue-200">
+          <strong>💡 Dicas:</strong>
+          <ul class="list-disc list-inside mt-2 space-y-1">
+            <li>Cada pergunta deve ter pelo menos UMA escolha de qualidade "Boa" (sábia)</li>
+            <li>No modo Show da Sabedoria, a escolha "Boa" é a resposta correta</li>
+            <li>Inclua citações bíblicas ou estoicas para enriquecer o aprendizado</li>
+          </ul>
+        </div>
+
+        <div class="flex gap-2 pt-4">
+          <button onclick="saveQuestion()" class="flex-1 bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-black font-bold py-3 rounded-xl transition-all">
+            💾 Salvar Pergunta
+          </button>
+          <button onclick="closeEditor()" class="bg-black/40 border border-gray-700 hover:border-gray-500 text-gray-300 font-bold py-3 px-6 rounded-xl transition-all">
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BANCO DE DADOS -->
+  <div id="screen-data" class="screen max-w-3xl mx-auto py-8 animate-fade">
+    <button onclick="showScreen('screen-menu')" class="mb-4 text-amber-400 hover:text-amber-300">← Voltar</button>
+    <div class="bg-black/50 backdrop-blur-sm rounded-2xl p-8 card-glow border border-amber-900/30">
+      <div class="text-5xl text-center mb-4">💾</div>
+      <h2 class="title-font text-3xl text-amber-400 text-center mb-6">Banco de Dados</h2>
+
+      <div class="space-y-4">
+        <div class="bg-black/40 rounded-xl p-4 border border-amber-900/30">
+          <h3 class="text-amber-400 font-semibold mb-2">📤 Exportar Perguntas</h3>
+          <p class="text-sm text-gray-300 mb-3">Baixe todas as perguntas (padrão + suas customizações) em formato JSON.</p>
+          <div class="flex gap-2 flex-wrap">
+            <button onclick="exportData('all')" class="bg-gradient-to-r from-amber-600 to-amber-500 text-black font-bold py-2 px-4 rounded-lg text-sm">
+              Exportar Tudo
+            </button>
+            <button onclick="exportData('custom')" class="bg-black/40 border border-amber-900/50 hover:border-amber-500 text-amber-400 font-bold py-2 px-4 rounded-lg text-sm">
+              Só Customizadas
+            </button>
+            <button onclick="exportData('defaults')" class="bg-black/40 border border-amber-900/50 hover:border-amber-500 text-amber-400 font-bold py-2 px-4 rounded-lg text-sm">
+              Só Padrões
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-black/40 rounded-xl p-4 border border-amber-900/30">
+          <h3 class="text-amber-400 font-semibold mb-2">📥 Importar Perguntas</h3>
+          <p class="text-sm text-gray-300 mb-3">Carregue um arquivo JSON com perguntas. Elas serão adicionadas ao banco.</p>
+          <input type="file" id="import-file" accept=".json" class="mb-2">
+          <div class="flex gap-2 flex-wrap">
+            <button onclick="importData('add')" class="bg-gradient-to-r from-green-700 to-green-600 text-white font-bold py-2 px-4 rounded-lg text-sm">
+              Adicionar ao Banco
+            </button>
+            <button onclick="importData('replace')" class="bg-gradient-to-r from-red-700 to-red-600 text-white font-bold py-2 px-4 rounded-lg text-sm">
+              Substituir Tudo
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-black/40 rounded-xl p-4 border border-amber-900/30">
+          <h3 class="text-amber-400 font-semibold mb-2">📋 Visualizar JSON</h3>
+          <p class="text-sm text-gray-300 mb-3">Veja ou edite diretamente o JSON do banco de dados.</p>
+          <textarea id="json-viewer" rows="8" class="font-mono text-xs"></textarea>
+          <div class="flex gap-2 mt-2">
+            <button onclick="loadJsonToViewer()" class="bg-black/40 border border-amber-900/50 hover:border-amber-500 text-amber-400 font-bold py-2 px-4 rounded-lg text-sm">
+              Carregar
+            </button>
+            <button onclick="saveJsonFromViewer()" class="bg-gradient-to-r from-amber-600 to-amber-500 text-black font-bold py-2 px-4 rounded-lg text-sm">
+              Salvar Alterações
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-4">
+          <h3 class="text-blue-400 font-semibold mb-2">ℹ️ Formato do JSON</h3>
+          <pre class="text-xs text-gray-300 overflow-x-auto"><code>{
+  "questions": [
+    {
+      "id": "uuid",
+      "category": "autocontrole|humildade|perdao|justica|paciencia|fe",
+      "difficulty": 1-4,
+      "icon": "😤",
+      "title": "Título",
+      "description": "Descrição da situação",
+      "choices": [
+        {
+          "text": "Texto da escolha",
+          "feedback": "Feedback após escolha",
+          "quote": "Citação (Bíblia/Estoico)",
+          "quality": "good|bad|neutral",
+          "result": { "autocontrole": 10, "sabedoria": 10, "paz": 10 }
+        }
+      ],
+      "custom": true
+    }
+  ]
+}</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONQUISTAS -->
+  <div id="screen-achievements" class="screen max-w-4xl mx-auto py-8 animate-fade">
+    <button onclick="showScreen('screen-menu')" class="mb-4 text-amber-400 hover:text-amber-300">← Voltar</button>
+    <div class="bg-black/50 backdrop-blur-sm rounded-2xl p-8 card-glow border border-amber-900/30">
+      <div class="text-5xl text-center mb-4">🏆</div>
+      <h2 class="title-font text-3xl text-amber-400 text-center mb-6">Conquistas</h2>
+      
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+        <div class="bg-black/40 rounded-xl p-4 border border-amber-900/30 text-center">
+          <div class="text-amber-400 font-bold text-2xl" id="stat-journeys">0</div>
+          <div class="text-xs text-gray-400">Jornadas Completas</div>
+        </div>
+        <div class="bg-black/40 rounded-xl p-4 border border-amber-900/30 text-center">
+          <div class="text-amber-400 font-bold text-2xl" id="stat-millionaire">0</div>
+          <div class="text-xs text-gray-400">Shows Vencidos</div>
+        </div>
+        <div class="bg-black/40 rounded-xl p-4 border border-amber-900/30 text-center">
+          <div class="text-amber-400 font-bold text-2xl" id="stat-money">R$ 0</div>
+          <div class="text-xs text-gray-400">Total Ganho</div>
+        </div>
+        <div class="bg-black/40 rounded-xl p-4 border border-amber-900/30 text-center">
+          <div class="text-amber-400 font-bold text-2xl" id="stat-achievements">0</div>
+          <div class="text-xs text-gray-400">Conquistas</div>
+        </div>
+      </div>
+
+      <div id="achievements-list" class="space-y-2"></div>
+    </div>
+  </div>
+
+  <!-- CONFIGURAÇÕES -->
+  <div id="screen-settings" class="screen max-w-3xl mx-auto py-8 animate-fade">
+    <button onclick="showScreen('screen-menu')" class="mb-4 text-amber-400 hover:text-amber-300">← Voltar</button>
+    <div class="bg-black/50 backdrop-blur-sm rounded-2xl p-8 card-glow border border-amber-900/30">
+      <div class="text-5xl text-center mb-4">⚙️</div>
+      <h2 class="title-font text-3xl text-amber-400 text-center mb-6">Configurações</h2>
+
+      <div class="space-y-4">
+        <div class="bg-black/40 rounded-xl p-4 border border-amber-900/30">
+          <label class="flex items-center justify-between">
+            <div>
+              <div class="text-amber-400 font-semibold">🔊 Efeitos Sonoros</div>
+              <div class="text-xs text-gray-400">Sons de cliques, acertos e erros</div>
+            </div>
+            <input type="checkbox" id="sfx-enabled" checked onchange="updateSettings()" class="w-5 h-5">
+          </label>
+        </div>
+
+        <div class="bg-black/40 rounded-xl p-4 border border-amber-900/30">
+          <label class="block mb-2">
+            <div class="text-amber-400 font-semibold mb-1">🎚️ Volume dos Efeitos</div>
+            <input type="range" id="sfx-volume" min="0" max="100" value="70" onchange="updateSettings()" class="w-full">
+          </label>
+        </div>
+
+        <div class="bg-black/40 rounded-xl p-4 border border-amber-900/30">
+          <label class="flex items-center justify-between">
+            <div>
+              <div class="text-amber-400 font-semibold">🎵 Música Ambiente</div>
+              <div class="text-xs text-gray-400">Música de fundo durante o jogo</div>
+            </div>
+            <input type="checkbox" id="music-enabled" checked onchange="updateSettings()" class="w-5 h-5">
+          </label>
+        </div>
+
+        <div class="bg-black/40 rounded-xl p-4 border border-amber-900/30">
+          <label class="block mb-2">
+            <div class="text-amber-400 font-semibold mb-1">🎚️ Volume da Música</div>
+            <input type="range" id="music-volume" min="0" max="100" value="40" onchange="updateSettings()" class="w-full">
+          </label>
+        </div>
+
+        <div class="bg-black/40 rounded-xl p-4 border border-amber-900/30">
+          <label class="flex items-center justify-between">
+            <div>
+              <div class="text-amber-400 font-semibold">✨ Animações</div>
+              <div class="text-xs text-gray-400">Efeitos visuais e transições</div>
+            </div>
+            <input type="checkbox" id="animations-enabled" checked onchange="updateSettings()" class="w-5 h-5">
+          </label>
+        </div>
+
+        <div class="bg-red-900/20 border border-red-500/30 rounded-xl p-4">
+          <div class="text-red-400 font-semibold mb-2">⚠️ Zona de Perigo</div>
+          <p class="text-xs text-gray-300 mb-3">Apagar todo o progresso, conquistas e perguntas customizadas.</p>
+          <button onclick="resetAllProgress()" class="bg-red-700 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg text-sm">
+            Resetar Tudo
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CRÉDITOS -->
+  <div id="screen-credits" class="screen max-w-3xl mx-auto py-8 animate-fade">
+    <button onclick="showScreen('screen-menu')" class="mb-4 text-amber-400 hover:text-amber-300">← Voltar</button>
+    <div class="bg-black/50 backdrop-blur-sm rounded-2xl p-8 card-glow border border-amber-900/30 text-center">
+      <div class="text-6xl mb-4 animate-float">⚖️</div>
+      <h2 class="title-font text-4xl shimmer-text mb-2">O Caminho da Sabedoria</h2>
+      <p class="text-gray-400 mb-6">Edição Completa v2.0</p>
+
+      <div class="bg-black/40 rounded-xl p-6 border border-amber-900/30 mb-6">
+        <h3 class="text-amber-400 title-font text-xl mb-4">Desenvolvido por</h3>
+        <div class="text-2xl text-white font-bold mb-2">Walney Moreira Klein</div>
+        <a href="mailto:walneyk@hotmail.com" class="text-amber-400 hover:text-amber-300 underline">
+          📧 walneyk@hotmail.com
+        </a>
+      </div>
+
+      <div class="bg-black/40 rounded-xl p-6 border border-amber-900/30 mb-6 text-left">
+        <h3 class="text-amber-400 title-font text-xl mb-4 text-center">Sobre o Jogo</h3>
+        <p class="text-gray-300 leading-relaxed mb-3">
+          <strong class="text-amber-400">O Caminho da Sabedoria</strong> é um jogo educativo que combina ensinamentos 
+          da <strong>Filosofia Estoica</strong> (Marco Aurélio, Epicteto, Sêneca) e da <strong>Bíblia Sagrada</strong> 
+          para ensinar as pessoas a lidarem com suas emoções.
+        </p>
+        <p class="text-gray-300 leading-relaxed mb-3">
+          A Inteligência Artificial não tem emoções — mas os humanos sim, e muitos sofrem por não conhecerem 
+          o autocontrole. Este jogo é uma jornada para aprender a arte de dominar o próprio espírito.
+        </p>
+        <p class="text-gray-300 leading-relaxed">
+          Com dois modos de jogo (Jornada e Show da Sabedoria), editor de perguntas personalizado, 
+          sistema de conquistas e muito mais, você pode aprender, ensinar e compartilhar sabedoria.
+        </p>
+      </div>
+
+      <div class="bg-black/40 rounded-xl p-6 border border-amber-900/30 mb-6">
+        <h3 class="text-amber-400 title-font text-xl mb-4">Fontes de Sabedoria</h3>
+        <div class="grid grid-cols-2 gap-3 text-sm">
+          <div class="text-gray-300">📖 Bíblia Sagrada</div>
+          <div class="text-gray-300">🏛️ Marco Aurélio</div>
+          <div class="text-gray-300">🏛️ Epicteto</div>
+          <div class="text-gray-300">🏛️ Sêneca</div>
+          <div class="text-gray-300">🏛️ Zenão de Cítio</div>
+          <div class="text-gray-300">🏛️ Musônio Rufo</div>
+        </div>
+      </div>
+
+      <div class="bg-black/40 rounded-xl p-6 border border-amber-900/30 mb-6">
+        <h3 class="text-amber-400 title-font text-xl mb-4">Categorias do Jogo</h3>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm">
+          <div class="text-gray-300">😤 Autocontrole</div>
+          <div class="text-gray-300">🙇 Humildade</div>
+          <div class="text-gray-300">💝 Perdão</div>
+          <div class="text-gray-300">⚖️ Justiça</div>
+          <div class="text-gray-300">⏳ Paciência</div>
+          <div class="text-gray-300">🙏 Fé</div>
+        </div>
+      </div>
+
+      <div class="border-l-4 border-amber-500 pl-4 italic text-amber-200 text-left mb-6">
+        "Feliz é aquele que encontrou a sabedoria, e o homem que obtém entendimento." — Provérbios 3:13
+      </div>
+
+      <div class="text-xs text-gray-500">
+        © 2026 - Todos os direitos reservados<br>
+        Feito com ❤️ para ensinar sabedoria
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- MODAL CONFIRMAÇÃO -->
+<div id="modal-confirm" class="hidden fixed inset-0 modal-backdrop z-50 flex items-center justify-center p-4">
+  <div class="bg-gradient-to-br from-gray-900 to-black rounded-2xl p-6 max-w-md w-full border border-amber-900/50">
+    <h3 class="title-font text-2xl text-amber-400 mb-4" id="confirm-title">Confirmar</h3>
+    <p class="text-gray-300 mb-6" id="confirm-message">Tem certeza?</p>
+    <div class="flex gap-2">
+      <button id="confirm-yes" class="flex-1 bg-gradient-to-r from-red-700 to-red-600 text-white font-bold py-3 rounded-xl">
+        Sim
+      </button>
+      <button onclick="closeConfirm()" class="flex-1 bg-black/40 border border-gray-700 text-gray-300 font-bold py-3 rounded-xl">
+        Não
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST NOTIFICATION -->
+<div id="toast" class="hidden fixed top-4 right-4 z-50 bg-black/90 border border-amber-500 rounded-xl p-4 shadow-2xl max-w-sm animate-slide-right">
+  <div class="flex items-start gap-3">
+    <div id="toast-icon" class="text-2xl"></div>
+    <div>
+      <div id="toast-title" class="text-amber-400 font-bold"></div>
+      <div id="toast-message" class="text-sm text-gray-300"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================
+// BANCO DE DADOS PADRÃO DE PERGUNTAS
+// ============================================
+const DEFAULT_QUESTIONS = [
+  {
+    id: 'q1', category: 'autocontrole', difficulty: 1, icon: '😤',
+    title: 'Humilhação Pública',
+    description: 'No trabalho, um colega te ridiculariza na frente de todos, fazendo piadas sobre um erro que você cometeu. Todos riem. Seu rosto queima de vergonha.',
+    choices: [
+      { text: 'Gritar e xingá-lo na frente de todos, revidando à altura', result: { autocontrole: -15, sabedoria: -10, paz: -15 }, feedback: 'Você reagiu por impulso. A raiva só gerou mais raiva, e agora você se arrepende das palavras ditas.', quote: '"Melhor é o longânimo do que o herói da guerra." — Provérbios 16:32', quality: 'bad' },
+      { text: 'Sair em silêncio, guardar a mágoa e planejar vingança depois', result: { autocontrole: -5, sabedoria: -5, paz: -10 }, feedback: 'Você não explodiu, mas guardou veneno no coração. A mágoa consumida por dentro é pior que a raiva expressa.', quote: '"A ira é uma loucura breve. Domine sua mente, ou ela dominará você." — Horácio', quality: 'bad' },
+      { text: 'Respirar fundo, olhar nos olhos dele com serenidade e seguir trabalhando. Reconhecer que a opinião dele não te define.', result: { autocontrole: 15, sabedoria: 15, paz: 15 }, feedback: 'Verdadeiro autocontrole. Você entendeu que a humilhação diz mais sobre quem humilha do que sobre quem é humilhado.', quote: '"Se alguém te ferir, não é ele quem te faz mal, mas o teu julgamento sobre o fato. Apaga esse julgamento." — Marco Aurélio', quality: 'good' }
+    ]
+  },
+  {
+    id: 'q2', category: 'justica', difficulty: 2, icon: '💼',
+    title: 'Injustiça no Trabalho',
+    description: 'Você trabalhou meses em um projeto importante. Na hora do reconhecimento, seu chefe dá todo o crédito a outro colega que quase não participou. Ninguém percebe.',
+    choices: [
+      { text: 'Pedir demissão impulsivamente e mandar uma mensagem raivosa para todos', result: { autocontrole: -15, sabedoria: -15, paz: -10 }, feedback: 'A raiva tomou conta. Você prejudicou sua própria reputação e agora enfrenta consequências que poderiam ter sido evitadas.', quote: '"Quem não domina a própria alma é como uma cidade murada, sem muros." — Provérbios 25:28', quality: 'bad' },
+      { text: 'Falar com seu chefe em particular, com calma, apresentando fatos sobre sua contribuição', result: { autocontrole: 15, sabedoria: 15, paz: 10 }, feedback: 'Você agiu com justiça e coragem. Falar a verdade com mansidão é mais poderoso que gritar.', quote: '"Responde brandamente e desvias o furor." — Provérbios 15:1', quality: 'good' },
+      { text: 'Aceitar calado, sentindo-se vítima e reclamando para todos depois', result: { autocontrole: -5, sabedoria: -10, paz: -10 }, feedback: 'A passividade com amargura não é virtude. Você deixou a injustiça corroer sua alma em silêncio.', quote: '"Não se deixe vencer do mal, mas vença o mal com o bem." — Romanos 12:21', quality: 'bad' }
+    ]
+  },
+  {
+    id: 'q3', category: 'perdao', difficulty: 2, icon: '💔',
+    title: 'Traição de um Amigo',
+    description: 'Você descobre que seu melhor amigo falou mal de você pelas costas, revelando segredos que você confiou a ele. A dor é profunda.',
+    choices: [
+      { text: 'Destruir a reputação dele, contando segredos dele para todos', result: { autocontrole: -15, sabedoria: -15, paz: -15 }, feedback: 'Dois erros não fazem um acerto. Você se tornou igual àquele que te feriu.', quote: '"Não digas: Eu lhe farei como ele me fez." — Provérbios 24:29', quality: 'bad' },
+      { text: 'Confrontá-lo com calma, expressar sua dor, e decidir com sabedoria se a amizade vale ser mantida', result: { autocontrole: 15, sabedoria: 15, paz: 15 }, feedback: 'Você honrou a amizade sendo honesto, mas também honrou a si mesmo estabelecendo limites. Isso é maturidade.', quote: '"Antes, sede uns para com os outros benignos, misericordiosos, perdoando-vos uns aos outros." — Efésios 4:32', quality: 'good' },
+      { text: 'Cortar relações imediatamente sem dizer uma palavra, bloqueando em tudo', result: { autocontrole: 0, sabedoria: -5, paz: -5 }, feedback: 'Às vezes é preciso se afastar, mas sem diálogo você não resolveu nada — apenas fugiu da dor.', quote: '"Na tua ira, não peques." — Efésios 4:26', quality: 'neutral' }
+    ]
+  },
+  {
+    id: 'q4', category: 'autocontrole', difficulty: 1, icon: '🚗',
+    title: 'Raiva no Trânsito',
+    description: 'Um motorista te fecha de forma perigosa, quase causando um acidente. Seu coração dispara de raiva. Você o alcança no sinal.',
+    choices: [
+      { text: 'Descer do carro, bater na janela dele e começar uma briga', result: { autocontrole: -15, sabedoria: -15, paz: -15 }, feedback: 'Um minuto de raiva pode destruir uma vida. Você colocou seu ego acima da sua segurança e da sua paz.', quote: '"O insensato explode toda a sua ira, mas o sábio por fim a guarda." — Provérbios 29:11', quality: 'bad' },
+      { text: 'Buzinar, xingar e dirigir perigosamente atrás dele para "dar o troco"', result: { autocontrole: -10, sabedoria: -10, paz: -10 }, feedback: 'Você deixou que um estranho controlasse suas emoções. A raiva ao volante é uma arma.', quote: '"A resposta branda desvia o furor, mas a palavra dura suscita a ira." — Provérbios 15:1', quality: 'bad' },
+      { text: 'Respirar fundo, agradecer por estar vivo, e seguir seu caminho. Talvez ele esteja com uma emergência.', result: { autocontrole: 15, sabedoria: 15, paz: 15 }, feedback: 'Você escolheu a vida. Considerar que o outro pode estar sofrendo é o começo da compaixão.', quote: '"Irai-vos e não pequeis; não se ponha o sol sobre a vossa ira." — Efésios 4:26', quality: 'good' }
+    ]
+  },
+  {
+    id: 'q5', category: 'paciencia', difficulty: 2, icon: '💰',
+    title: 'Perda Financeira',
+    description: 'Um investimento deu errado e você perdeu uma quantia significativa de dinheiro. Meses de esforço em vão. A ansiedade toma conta.',
+    choices: [
+      { text: 'Tentar recuperar imediatamente com apostas arriscadas, movido pelo desespero', result: { autocontrole: -15, sabedoria: -15, paz: -15 }, feedback: 'O desespero é péssimo conselheiro. Você transformou uma perda em catástrofe.', quote: '"Quem observa o vento nunca semeará." — Eclesiastes 11:4', quality: 'bad' },
+      { text: 'Aceitar a perda como parte da vida, aprender com o erro e recomeçar com planejamento', result: { autocontrole: 15, sabedoria: 15, paz: 10 }, feedback: 'Dinheiro vai e vem. O caráter permanece. Você entendeu que bens materiais não definem seu valor.', quote: '"Porque nada trouxemos para este mundo, e nada podemos levar dele." — 1 Timóteo 6:7', quality: 'good' },
+      { text: 'Culpar todos ao redor — o mercado, o governo, quem te indicou — e afundar em autopena', result: { autocontrole: -10, sabedoria: -10, paz: -15 }, feedback: 'Culpar os outros é se tornar prisioneiro. A responsabilidade é sua, e isso é libertador.', quote: '"Cada um carregue o seu próprio fardo." — Gálatas 6:5', quality: 'bad' }
+    ]
+  },
+  {
+    id: 'q6', category: 'humildade', difficulty: 2, icon: '🏆',
+    title: 'Sucesso Repentino',
+    description: 'Você alcançou algo que sempre sonhou. Todos te elogiam, te admiram. A sensação é inebriante. Você se sente superior.',
+    choices: [
+      { text: 'Aproveitar para se gabar, menosprezar quem não conseguiu e se achar melhor que todos', result: { autocontrole: -15, sabedoria: -15, paz: -10 }, feedback: 'O orgulho precede a ruína. O sucesso sem humildade é o início da queda.', quote: '"A soberba precede a ruína, e a altivez do espírito, a queda." — Provérbios 16:18', quality: 'bad' },
+      { text: 'Reconhecer a conquista com gratidão, lembrar de quem te ajudou, e manter os pés no chão', result: { autocontrole: 15, sabedoria: 15, paz: 15 }, feedback: 'Humildade no sucesso é mais raro — e mais valioso — que coragem na adversidade.', quote: '"Que tens tu que não tenhas recebido? E, se o recebeste, por que te glorias?" — 1 Coríntios 4:7', quality: 'good' },
+      { text: 'Fingir modéstia mas por dentro se sentir superior e olhar os outros com desdém', result: { autocontrole: -10, sabedoria: -10, paz: -10 }, feedback: 'A falsa humildade é pior que o orgulho aberto. Deus vê o coração.', quote: '"Deus resiste aos soberbos, mas dá graça aos humildes." — Tiago 4:6', quality: 'bad' }
+    ]
+  },
+  {
+    id: 'q7', category: 'fe', difficulty: 3, icon: '🏥',
+    title: 'Doença na Família',
+    description: 'Um familiar próximo recebe diagnóstico grave. O medo, a tristeza e a sensação de impotência te dominam.',
+    choices: [
+      { text: 'Se revoltar contra Deus, contra a vida, e afundar em desespero total', result: { autocontrole: -10, sabedoria: -10, paz: -15 }, feedback: 'A dor é legítima, mas o desespero sem fé rouba a força de quem precisa de você agora.', quote: '"Na verdade, na verdade vos digo que vós chorareis e vos lamentareis, e o mundo se alegrará." — João 16:20', quality: 'bad' },
+      { text: 'Permitir-se sentir a dor, mas buscar força na fé, na família e no que está sob seu controle', result: { autocontrole: 15, sabedoria: 15, paz: 15 }, feedback: 'Você aceitou o que não pode mudar e lutou pelo que pode. Isso é sabedoria pura.', quote: '"Concede-me, Senhor, serenidade para aceitar o que não posso mudar, coragem para mudar o que posso, e sabedoria para distinguir um do outro." — Reinhold Niebuhr', quality: 'good' },
+      { text: 'Fingir que está tudo bem, não demonstrar emoção nenhuma para "ser forte"', result: { autocontrole: -5, sabedoria: -5, paz: -10 }, feedback: 'Reprimir emoções não é força — é uma bomba-relógio. Ser forte é também permitir-se sentir.', quote: '"Bem-aventados os que choram, porque serão consolados." — Mateus 5:4', quality: 'neutral' }
+    ]
+  },
+  {
+    id: 'q8', category: 'justica', difficulty: 2, icon: '🗣️',
+    title: 'Tentação de Mentir',
+    description: 'Você tem a oportunidade de contar uma pequena mentira que traria grande vantagem financeira. Ninguém descobriria.',
+    choices: [
+      { text: 'Mentir e aproveitar a vantagem. Afinal, todos fazem.', result: { autocontrole: -15, sabedoria: -15, paz: -15 }, feedback: 'O ganho material não compensa a perda da integridade. Você se tornou alguém que não reconhece no espelho.', quote: '"Os lábios mentirosos são abomináveis ao Senhor." — Provérbios 12:22', quality: 'bad' },
+      { text: 'Dizer a verdade, mesmo sabendo que perderá a vantagem. Sua consciência vale mais.', result: { autocontrole: 15, sabedoria: 15, paz: 15 }, feedback: 'Integridade é fazer o certo quando ninguém está olhando. Você saiu mais rico em caráter.', quote: '"Melhor é o pobre que anda na sua integridade do que o perverso de lábios." — Provérbios 13:5', quality: 'good' },
+      { text: 'Contar uma "meia-verdade" que não é exatamente mentira, mas engana', result: { autocontrole: -10, sabedoria: -10, paz: -10 }, feedback: 'Enganar com palavras técnicas ainda é mentir. Você trapaceou sua própria consciência.', quote: '"Não dirás falso testemunho." — Êxodo 20:16', quality: 'bad' }
+    ]
+  },
+  {
+    id: 'q9', category: 'perdao', difficulty: 2, icon: '🙏',
+    title: 'Alguém Pede Ajuda',
+    description: 'Você está cansado após um dia difícil. Uma pessoa desconhecida te pede ajuda com um problema. Você poderia simplesmente ignorar.',
+    choices: [
+      { text: 'Ignorar completamente, pensando "cada um que cuide de si"', result: { autocontrole: -10, sabedoria: -15, paz: -10 }, feedback: 'O egoísmo endurece o coração. Você perdeu uma chance de ser luz na vida de alguém.', quote: '"A quem não tem compaixão do seu irmão, como poderá amar a Deus?" — 1 João 4:20', quality: 'bad' },
+      { text: 'Ajudar com generosidade, mesmo cansado, reconhecendo que todos precisamos uns dos outros', result: { autocontrole: 10, sabedoria: 15, paz: 15 }, feedback: 'Servir aos outros é o caminho mais seguro para a paz interior. Você venceu o próprio cansaço.', quote: '"Mais bem-aventurado é dar do que receber." — Atos 20:35', quality: 'good' },
+      { text: 'Ajudar mas reclamando e deixando claro que está fazendo um favor enorme', result: { autocontrole: -5, sabedoria: -5, paz: -5 }, feedback: 'Ajudar com má vontade anula o ato. A generosidade verdadeira nasce de um coração disposto.', quote: '"Cada um contribua segundo propôs no seu coração; não com tristeza, nem por necessidade." — 2 Coríntios 9:7', quality: 'neutral' }
+    ]
+  },
+  {
+    id: 'q10', category: 'autocontrole', difficulty: 2, icon: '📱',
+    title: 'Crítica nas Redes Sociais',
+    description: 'Alguém escreveu uma crítica dura e pública sobre você nas redes sociais. Está viralizando. Os comentários são cruéis.',
+    choices: [
+      { text: 'Responder com ataques pessoais, expondo a vida dessa pessoa', result: { autocontrole: -15, sabedoria: -15, paz: -15 }, feedback: 'Você alimentou o fogo. A internet nunca esquece, e você se rebaixou ao nível dos seus críticos.', quote: '"Daqui por diante, ninguém me inquiete; porque trago no meu corpo as marcas do Senhor Jesus." — Gálatas 6:17', quality: 'bad' },
+      { text: 'Desligar o celular, refletir sobre se há algo de verdade na crítica, e seguir em paz', result: { autocontrole: 15, sabedoria: 15, paz: 15 }, feedback: 'Você entendeu que a validação online não define seu valor. Sabedoria rara em tempos de ruído.', quote: '"Não temais os que matam o corpo e não podem matar a alma." — Mateus 10:28', quality: 'good' },
+      { text: 'Criar perfis falsos para defender a si mesmo e atacar os críticos anonimamente', result: { autocontrole: -15, sabedoria: -15, paz: -15 }, feedback: 'Covardia e desonestidade juntas. Você perdeu muito mais do que imaginava.', quote: '"O que encobre as suas transgressões nunca prosperará." — Provérbios 28:13', quality: 'bad' }
+    ]
+  },
+  {
+    id: 'q11', category: 'paciencia', difficulty: 1, icon: '🌧️',
+    title: 'Dia de Chuva e Caos',
+    description: 'Tudo deu errado hoje: perdeu o ônibus, choveu, derramou café na camisa. Pequenas frustrações acumuladas.',
+    choices: [
+      { text: 'Explodir com a primeira pessoa que aparecer — pode ser um caixa, um familiar, qualquer um', result: { autocontrole: -15, sabedoria: -15, paz: -15 }, feedback: 'Você transformou um dia ruim em um dia horrível para os outros também. A ira é contagiosa.', quote: '"O homem iracundo suscita contendas." — Provérbios 29:22', quality: 'bad' },
+      { text: 'Reconhecer que são pequenos infortúnios, rir da situação e lembrar: "amanhã é outro dia"', result: { autocontrole: 15, sabedoria: 15, paz: 15 }, feedback: 'Você entendeu que a vida é feita de pequenos caos — e que sua paz depende de como você reage a eles.', quote: '"Basta a cada dia o seu próprio mal." — Mateus 6:34', quality: 'good' },
+      { text: 'Guardar tudo e explodir sozinho em casa, se punindo mentalmente', result: { autocontrole: -5, sabedoria: -10, paz: -10 }, feedback: 'A autopunição silenciosa é uma forma de violência contra si mesmo.', quote: '"Amai o vosso próximo como a vós mesmos." — Mateus 22:39', quality: 'bad' }
+    ]
+  },
+  {
+    id: 'q12', category: 'perdao', difficulty: 2, icon: '👨‍👩‍👧',
+    title: 'Discussão Familiar',
+    description: 'Uma discussão com um familiar querido escala. Palavras duras são ditas. Ambos estão feridos.',
+    choices: [
+      { text: 'Ter razão a qualquer custo, humilhando a pessoa com argumentos até ela "perder"', result: { autocontrole: -15, sabedoria: -15, paz: -15 }, feedback: 'Você ganhou a discussão e perdeu a relação. Ter razão não vale nada sem amor.', quote: '"O conhecimento ensoberbece, mas o amor edifica." — 1 Coríntios 8:1', quality: 'bad' },
+      { text: 'Dar o primeiro passo para reconciliar, admitir sua parte no conflito, mesmo que doa', result: { autocontrole: 15, sabedoria: 15, paz: 15 }, feedback: 'Pedir desculpa não é fraqueza — é a maior força do caráter. Você escolheu o amor.', quote: '"Bem-aventurados os pacificadores, porque serão chamados filhos de Deus." — Mateus 5:9', quality: 'good' },
+      { text: 'Ficar dias sem falar, esperando que o outro peça desculpas primeiro', result: { autocontrole: -5, sabedoria: -10, paz: -10 }, feedback: 'O orgulho constrói muros. O silêncio prolongado é uma ferida que não cicatriza.', quote: '"Não se ponha o sol sobre a vossa ira." — Efésios 4:26', quality: 'bad' }
+    ]
+  },
+  {
+    id: 'q13', category: 'autocontrole', difficulty: 2, icon: '⏰',
+    title: 'Escolha Entre Prazer e Dever',
+    description: 'Você tem um compromisso importante amanhã cedo. Amigos te convidam para uma festa agora. Seria muito divertido.',
+    choices: [
+      { text: 'Ir à festa, ignorar o compromisso. "A vida é uma só!"', result: { autocontrole: -15, sabedoria: -15, paz: -10 }, feedback: 'O prazer momentâneo custou sua palavra e sua responsabilidade. Liberdade sem disciplina é escravidão.', quote: '"Tudo me é lícito, mas nem tudo me convém." — 1 Coríntios 6:12', quality: 'bad' },
+      { text: 'Recusar com educação, honrar seu compromisso, e se recompensar depois com algo prazeroso', result: { autocontrole: 15, sabedoria: 15, paz: 15 }, feedback: 'Disciplina é liberdade disfarçada. Você venceu a si mesmo — a maior vitória que existe.', quote: '"Aquele que domina o seu espírito é melhor do que o que toma uma cidade." — Provérbios 16:32', quality: 'good' },
+      { text: 'Ir à festa mas ficar a noite toda se sentindo culpado e ansioso', result: { autocontrole: -10, sabedoria: -10, paz: -15 }, feedback: 'Você não desfrutou nem do prazer nem do dever. Pior dos mundos: consciência pesada sem diversão.', quote: '"Examinai-vos a vós mesmos se estais na fé." — 2 Coríntios 13:5', quality: 'bad' }
+    ]
+  },
+  {
+    id: 'q14', category: 'justica', difficulty: 3, icon: '🎁',
+    title: 'Oportunidade Desonesta',
+    description: 'Um colega te propõe um esquema que renderia muito dinheiro, mas é claramente ilegal. "Ninguém vai saber", ele garante.',
+    choices: [
+      { text: 'Aceitar. O risco vale a recompensa.', result: { autocontrole: -15, sabedoria: -15, paz: -15 }, feedback: 'Você trocou sua liberdade e sua paz por dinheiro sujo. A conta sempre chega.', quote: '"De que aproveita ao homem ganhar o mundo inteiro e perder a sua alma?" — Marcos 8:36', quality: 'bad' },
+      { text: 'Recusar firmemente e, se necessário, denunciar. Integridade não se negocia.', result: { autocontrole: 15, sabedoria: 15, paz: 15 }, feedback: 'Você dormirá em paz. Essa é uma riqueza que nenhum dinheiro compra.', quote: '"Melhor é o pouco do justo do que a abundância de muitos ímpios." — Salmos 37:16', quality: 'good' },
+      { text: 'Não participar diretamente, mas fingir que não viu nada e ficar em silêncio', result: { autocontrole: -5, sabedoria: -10, paz: -10 }, feedback: 'Omissão diante do mal também é culpa. O silêncio dos justos é cumplicidade.', quote: '"Aquele, pois, que sabe fazer o bem e não o faz, comete pecado." — Tiago 4:17', quality: 'bad' }
+    ]
+  },
+  {
+    id: 'q15', category: 'paciencia', difficulty: 2, icon: '🪞',
+    title: 'Fracasso Pessoal',
+    description: 'Você tentou algo importante e falhou publicamente. Todos viram. A vergonha é imensa.',
+    choices: [
+      { text: 'Desistir de tudo, se convencer de que não é capaz e se esconder do mundo', result: { autocontrole: -15, sabedoria: -15, paz: -15 }, feedback: 'Você deixou um fracasso definir sua vida inteira. O erro é um evento, não uma identidade.', quote: '"Sete vezes cairá o justo, mas se levantará." — Provérbios 24:16', quality: 'bad' },
+      { text: 'Aceitar o fracasso, aprender com ele, e tentar de novo com mais sabedoria', result: { autocontrole: 15, sabedoria: 15, paz: 15 }, feedback: 'Você entendeu que o fracasso é professor, não verdugo. Isso é resiliência verdadeira.', quote: '"Tribulação e angústia sobre toda a alma do homem que faz o mal; mas glória, honra e paz a qualquer que opera o bem." — Romanos 2:9-10', quality: 'good' },
+      { text: 'Culpar fatores externos — sorte, outras pessoas, circunstâncias — e nunca assumir responsabilidade', result: { autocontrole: -10, sabedoria: -15, paz: -10 }, feedback: 'Sem responsabilidade não há crescimento. Você se condenou a repetir o erro.', quote: '"Cada um será provado na sua própria obra." — Gálatas 6:4', quality: 'bad' }
+    ]
+  },
+  {
+    id: 'q16', category: 'fe', difficulty: 3, icon: '🌙',
+    title: 'Insônia e Ansiedade',
+    description: 'É madrugada. Você não consegue dormir. A mente não para. Preocupações com o futuro, arrependimentos do passado, tudo ao mesmo tempo.',
+    choices: [
+      { text: 'Se afundar em pensamentos catastróficos, imaginando os piores cenários possíveis', result: { autocontrole: -15, sabedoria: -10, paz: -15 }, feedback: 'Você está sofrendo duas vezes: uma vez na imaginação, outra na realidade — que nem aconteceu ainda.', quote: '"Qual de vós, por mais que se preocupe, pode acrescentar um côvado ao curso da sua vida?" — Mateus 6:27', quality: 'bad' },
+      { text: 'Reconhecer os pensamentos, entregá-los a Deus ou à razão, e focar apenas no presente', result: { autocontrole: 15, sabedoria: 15, paz: 15 }, feedback: 'Você praticou o desapego dos pensamentos. Eles vêm e vão — você não é eles.', quote: '"Lançando sobre ele toda a vossa ansiedade, porque ele tem cuidado de vós." — 1 Pedro 5:7', quality: 'good' },
+      { text: 'Pegar o celular e rolar redes sociais até desmaiar de cansaço', result: { autocontrole: -10, sabedoria: -10, paz: -10 }, feedback: 'Fuga temporária, não solução. Você só adiou o confronto consigo mesmo.', quote: '"Vigiai e orai, para que não entreis em tentação." — Mateus 26:41', quality: 'bad' }
+    ]
+  },
+  {
+    id: 'q17', category: 'humildade', difficulty: 3, icon: '🎓',
+    title: 'Sabedoria versus Arrogância',
+    description: 'Você estudou muito e se tornou referência em sua área. Começa a sentir que sabe mais que todos e que as opiniões alheias são inferiores.',
+    choices: [
+      { text: 'Continuar assim — afinal, você realmente sabe mais que a maioria', result: { autocontrole: -10, sabedoria: -15, paz: -10 }, feedback: 'O conhecimento sem humildade se torna prisão. Você se isolou em sua própria torre.', quote: '"O conhecimento ensoberbece, mas o amor edifica." — 1 Coríntios 8:1', quality: 'bad' },
+      { text: 'Lembrar que quanto mais se sabe, mais se percebe o quanto se ignora. Continuar aprendendo com todos', result: { autocontrole: 15, sabedoria: 15, paz: 15 }, feedback: 'Verdadeira sabedoria. Você entendeu que aprender é um caminho sem fim.', quote: '"O princípio da sabedoria é o temor do Senhor." — Salmos 111:10', quality: 'good' },
+      { text: 'Esconder seu conhecimento para parecer modesto', result: { autocontrole: -5, sabedoria: -5, paz: -5 }, feedback: 'Falsa modéstia não é virtude — é vaidade disfarçada. Use seu conhecimento para servir.', quote: '"Ass brilhe a luz de vocês diante dos homens." — Mateus 5:16', quality: 'neutral' }
+    ]
+  },
+  {
+    id: 'q18', category: 'fe', difficulty: 4, icon: '⚰️',
+    title: 'Luto Profundo',
+    description: 'Você perde alguém muito querido. O vazio é imenso. A vida parece sem sentido. As pessoas dizem "vai passar", mas a dor é constante.',
+    choices: [
+      { text: 'Se isolar completamente, recusar ajuda, e afundar na depressão sem buscar sentido', result: { autocontrole: -15, sabedoria: -15, paz: -15 }, feedback: 'A dor é real, mas o isolamento a multiplica. Você se perdeu no abismo.', quote: '"Não quero, porém, irmãos, que sejais ignorantes acerca dos que já dormem." — 1 Tessalonicenses 4:13', quality: 'bad' },
+      { text: 'Permitir-se chorar, honrar a memória de quem partiu, e buscar conforto na fé e nas pessoas que ama', result: { autocontrole: 15, sabedoria: 15, paz: 15 }, feedback: 'Você honrou o amor que sentia. O luto é o preço do amor — e vale a pena pagá-lo com dignidade.', quote: '"Jesus chorou." — João 11:35', quality: 'good' },
+      { text: 'Fingir que está tudo bem, se manter ocupado o tempo todo para não sentir a dor', result: { autocontrole: -10, sabedoria: -10, paz: -15 }, feedback: 'A dor não processada explode mais tarde. Fugir do luto é adiar o encontro com você mesmo.', quote: '"Bem-aventados os que choram, porque serão consolados." — Mateus 5:4', quality: 'bad' }
+    ]
+  },
+  {
+    id: 'q19', category: 'autocontrole', difficulty: 3, icon: '🍷',
+    title: 'Tentação dos Excessos',
+    description: 'Você tem acesso fácil a algo que te faz mal (comida, bebida, compras, etc). Sabe que faz mal, mas o prazer é imediato. Ninguém está olhando.',
+    choices: [
+      { text: 'Ceder ao prazer. "Amanhã eu começo a me controlar"', result: { autocontrole: -15, sabedoria: -10, paz: -10 }, feedback: '"Amanhã" é a palavra favorita dos que nunca mudam. Você fortaleceu o hábito que te aprisiona.', quote: '"Tudo me é lícito, mas nem tudo me convém." — 1 Coríntios 6:12', quality: 'bad' },
+      { text: 'Reconhecer o desejo, mas escolher não agir. Lembrar do seu objetivo maior', result: { autocontrole: 15, sabedoria: 15, paz: 15 }, feedback: 'Você praticou a virtude mais difícil: dizer não a si mesmo. Cada "não" fortalece seu caráter.', quote: '"Quem não domina o seu espírito é como uma cidade derribada, que não tem muros." — Provérbios 25:28', quality: 'good' },
+      { text: 'Ceder mas sentir culpa intensa depois, se punindo mentalmente', result: { autocontrole: -10, sabedoria: -10, paz: -15 }, feedback: 'Ceder e se punir é um ciclo vicioso. A culpa sem arrependimento verdadeiro não transforma.', quote: '"A tristeza segundo Deus opera arrependimento para a salvação." — 2 Coríntios 7:10', quality: 'bad' }
+    ]
+  },
+  {
+    id: 'q20', category: 'humildade', difficulty: 4, icon: '👑',
+    title: 'Poder e Corrupção',
+    description: 'Você alcançou uma posição de poder. Pode beneficiar amigos, prejudicar inimigos, e ninguém questiona suas decisões. O poder é inebriante.',
+    choices: [
+      { text: 'Usar o poder para se beneficiar e beneficiar os seus. "Quem pode, pode"', result: { autocontrole: -15, sabedoria: -15, paz: -15 }, feedback: 'O poder sem ética é tirania. Você se tornou o que um dia criticou.', quote: '"A justiça exalta as nações, mas o pecado é o opróbrio dos povos." — Provérbios 14:34', quality: 'bad' },
+      { text: 'Lembrar que o poder é temporário e serve para servir. Agir com justiça mesmo quando ninguém vê', result: { autocontrole: 15, sabedoria: 15, paz: 15 }, feedback: 'Você entendeu que o verdadeiro líder serve. Seu legado será lembrado com honra.', quote: '"Quem quiser ser o maior, seja servo de todos." — Marcos 10:44', quality: 'good' },
+      { text: 'Renunciar ao poder por se sentir indigno dele', result: { autocontrole: -5, sabedoria: -5, paz: -5 }, feedback: 'Fugir da responsabilidade não é humildade — é covardia. Use o poder para o bem.', quote: '"A quem muito é dado, muito será exigido." — Lucas 12:48', quality: 'neutral' }
+    ]
+  },
+  {
+    id: 'q21', category: 'paciencia', difficulty: 3, icon: '🌱',
+    title: 'Resultados Demoram',
+    description: 'Você está se esforçando há meses em algo importante (estudo, projeto, relacionamento), mas os resultados não aparecem. Outros parecem avançar mais rápido.',
+    choices: [
+      { text: 'Desistir e tentar algo diferente. "Isso não é para mim"', result: { autocontrole: -10, sabedoria: -10, paz: -10 }, feedback: 'Você confundiu paciência com teimosia. Desistir no limiar do sucesso é o maior arrependimento.', quote: '"Mas o que perseverar até o fim, esse será salvo." — Mateus 24:13', quality: 'bad' },
+      { text: 'Continuar com fé, ajustando a rota quando necessário, mas sem desistir do objetivo', result: { autocontrole: 15, sabedoria: 15, paz: 15 }, feedback: 'Você entendeu que o tempo é aliado dos pacientes. Cada dia é um passo, não um fracasso.', quote: '"E não nos cansemos de fazer o bem, porque a seu tempo ceifaremos, se não desfalecermos." — Gálatas 6:9', quality: 'good' },
+      { text: 'Continuar mas com amargura, reclamando que a vida é injusta', result: { autocontrole: -10, sabedoria: -10, paz: -15 }, feedback: 'Reclamar não acelera o processo — só envenena o caminho.', quote: '"Fazei tudo sem murmurações nem contendas." — Filipenses 2:14', quality: 'bad' }
+    ]
+  },
+  {
+    id: 'q22', category: 'perdao', difficulty: 4, icon: '🕊️',
+    title: 'Perdoar o Imperdoável',
+    description: 'Alguém te fez um mal profundo, imperdoável. Todos dizem que você deve perdoar, mas a dor é tão grande que parece impossível.',
+    choices: [
+      { text: 'Nunca perdoar. Guardar a mágoa para sempre como forma de justiça', result: { autocontrole: -15, sabedoria: -15, paz: -15 }, feedback: 'Guardar rancor é beber veneno esperando que o outro morra. Você se tornou prisioneiro do passado.', quote: '"Perdoa-nos as nossas dívidas, assim como nós perdoamos aos nossos devedores." — Mateus 6:12', quality: 'bad' },
+      { text: 'Perdoar não o que a pessoa fez, mas libertar-se do peso. O perdão é para você, não para ela', result: { autocontrole: 15, sabedoria: 15, paz: 15 }, feedback: 'Você entendeu a essência do perdão: não é aprovar o mal, mas recusar-se a ser definido por ele.', quote: '"Perdoai, e sereis perdoados." — Lucas 6:37', quality: 'good' },
+      { text: 'Dizer que perdoou mas continuar sentindo raiva e buscando vingança disfarçada', result: { autocontrole: -10, sabedoria: -10, paz: -10 }, feedback: 'Perdão falso é pior que nenhum perdão. Deus vê o coração.', quote: '"Este povo honra-me com os lábios, mas o seu coração está longe de mim." — Mateus 15:8', quality: 'bad' }
+    ]
+  },
+  {
+    id: 'q23', category: 'fe', difficulty: 4, icon: '🔥',
+    title: 'Crise de Fé',
+    description: 'Depois de uma grande provação, você começa a duvidar de tudo: de Deus, do sentido da vida, da justiça. A fé que te sustentava parece ter desaparecido.',
+    choices: [
+      { text: 'Abandonar completamente a fé e se entregar ao cinismo e niilismo', result: { autocontrole: -15, sabedoria: -10, paz: -15 }, feedback: 'A dor te fez jogar fora o que te sustentava. O cinismo é uma prisão disfarçada de liberdade.', quote: '"Disse o néscio no seu coração: Não há Deus." — Salmos 14:1', quality: 'bad' },
+      { text: 'Reconhecer a dúvida como parte da jornada. Buscar, questionar, mas não abandonar a busca pela verdade', result: { autocontrole: 15, sabedoria: 15, paz: 15 }, feedback: 'Você entendeu que a fé madura passa pela dúvida. Questionar não é perder a fé — é aprofundá-la.', quote: '"Senhor, creio; ajuda a minha incredulidade." — Marcos 9:24', quality: 'good' },
+      { text: 'Fingir que a fé continua intacta, frequentar cultos mas por dentro estar vazio', result: { autocontrole: -10, sabedoria: -10, paz: -10 }, feedback: 'A hipocrisia religiosa é uma das formas mais profundas de solidão. Seja honesto consigo e com Deus.', quote: '"Deus é espírito, e importa que os seus adoradores o adorem em espírito e em verdade." — João 4:24', quality: 'bad' }
+    ]
+  },
+  {
+    id: 'q24', category: 'justica', difficulty: 3, icon: '⚔️',
+    title: 'Dilema Moral',
+    description: 'Você descobre que alguém próximo cometeu um erro grave que prejudicou terceiros. Denunciar significa traí-lo. Calar significa ser cúmplice.',
+    choices: [
+      { text: 'Proteger a pessoa a qualquer custo, mesmo sabendo que outros estão sendo prejudicados', result: { autocontrole: -10, sabedoria: -15, paz: -15 }, feedback: 'Lealdade sem justiça é cumplicidade. Você escolheu um lado e perdeu sua integridade.', quote: '"Não farás acepção de pessoas nem aceitarás suborno." — Deuteronômio 16:19', quality: 'bad' },
+      { text: 'Conversar com a pessoa primeiro, incentivá-la a se corrigir. Se não o fizer, agir com justiça', result: { autocontrole: 15, sabedoria: 15, paz: 10 }, feedback: 'Você honrou a pessoa dando-lhe chance, mas honrou a verdade agindo quando necessário.', quote: '"Se teu irmão pecar contra ti, vai e argúi-o entre ti e ele só." — Mateus 18:15', quality: 'good' },
+      { text: 'Denunciar imediatamente publicamente, sem dar chance de defesa', result: { autocontrole: -5, sabedoria: -10, paz: -10 }, feedback: 'Justiça sem misericórdia é crueldade. Você agiu certo no conteúdo, errado na forma.', quote: '"A justiça e o juízo são a base do teu trono." — Salmos 89:14', quality: 'neutral' }
+    ]
+  }
+];
+
+// ============================================
+// ESTADO GLOBAL
+// ============================================
+let state = {
+  questions: [],
+  settings: {
+    sfxEnabled: true,
+    sfxVolume: 0.7,
+    musicEnabled: true,
+    musicVolume: 0.4,
+    animationsEnabled: true
+  },
+  stats: {
+    journeysCompleted: 0,
+    millionaireWins: 0,
+    totalMoney: 0,
+    achievements: []
+  },
+  journey: {
+    day: 1,
+    maxDays: 10,
+    autocontrole: 50,
+    sabedoria: 50,
+    paz: 50,
+    usedEvents: [],
+    currentEvent: null
+  },
+  millionaire: {
+    category: 'all',
+    difficulty: 1,
+    currentQuestion: 0,
+    totalQuestions: 10,
+    prize: 0,
+    helps: { skip: true, universal: true, sage: true, cards: true },
+    usedQuestions: [],
+    currentEvent: null,
+    stopped: false,
+    prizes: [1000, 2000, 5000, 10000, 20000, 50000, 100000, 200000, 500000, 1000000]
+  },
+  editor: {
+    editingId: null,
+    choices: []
+  }
+};
+
+const ACHIEVEMENTS = [
+  { id: 'first_journey', icon: '🌱', title: 'Primeiros Passos', desc: 'Complete sua primeira jornada', check: s => s.journeysCompleted >= 1 },
+  { id: 'journey_master', icon: '👑', title: 'Mestre da Jornada', desc: 'Complete 5 jornadas', check: s => s.journeysCompleted >= 5 },
+  { id: 'journey_legend', icon: '🏆', title: 'Lenda Viva', desc: 'Complete 10 jornadas', check: s => s.journeysCompleted >= 10 },
+  { id: 'first_million', icon: '💰', title: 'Primeiro Milhão', desc: 'Ganhe R$ 1.000.000 no Show', check: s => s.totalMoney >= 1000000 },
+  { id: 'rich', icon: '💎', title: 'Magnata', desc: 'Acumule R$ 500.000 no total', check: s => s.totalMoney >= 500000 },
+  { id: 'creator', icon: '✏️', title: 'Criador', desc: 'Crie sua primeira pergunta', check: s => s.questions.filter(q => q.custom).length >= 1 },
+  { id: 'author', icon: '📚', title: 'Autor Prolífico', desc: 'Crie 10 perguntas', check: s => s.questions.filter(q => q.custom).length >= 10 },
+  { id: 'stoic', icon: '🏛️', title: 'Estoico', desc: 'Termine jornada com 80+ em todos atributos', check: s => s.lastJourneyPerfect },
+  { id: 'wise', icon: '🦉', title: 'Sábio', desc: 'Responda 50 perguntas corretamente no Show', check: s => s.totalCorrect >= 50 },
+  { id: 'explorer', icon: '🗺️', title: 'Explorador', desc: 'Jogue todos os modos', check: s => s.playedAll }
+];
+
+// ============================================
+// SISTEMA DE ÁUDIO (Web Audio API)
+// ============================================
+let audioCtx = null;
+let musicOsc = null;
+let musicGain = null;
+
+function initAudio() {
+  if (!audioCtx) {
+    try {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    } catch(e) { console.log('Audio not supported'); }
+  }
+}
+
+function playTone(freq, duration, type = 'sine', volume = 0.3) {
+  if (!state.settings.sfxEnabled || !audioCtx) return;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.type = type;
+  osc.frequency.value = freq;
+  gain.gain.setValueAtTime(0, audioCtx.currentTime);
+  gain.gain.linearRampToValueAtTime(volume * state.settings.sfxVolume, audioCtx.currentTime + 0.01);
+  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+  osc.start();
+  osc.stop(audioCtx.currentTime + duration);
+}
+
+function playClick() { playTone(800, 0.05, 'square', 0.1); }
+function playSuccess() {
+  playTone(523, 0.15, 'sine', 0.3);
+  setTimeout(() => playTone(659, 0.15, 'sine', 0.3), 100);
+  setTimeout(() => playTone(784, 0.3, 'sine', 0.3), 200);
+}
+function playError() {
+  playTone(200, 0.2, 'sawtooth', 0.2);
+  setTimeout(() => playTone(150, 0.3, 'sawtooth', 0.2), 150);
+}
+function playLevelUp() {
+  [523, 659, 784, 1047].forEach((f, i) => {
+    setTimeout(() => playTone(f, 0.2, 'sine', 0.3), i * 100);
+  });
+}
+function playApplause() {
+  if (!state.settings.sfxEnabled || !audioCtx) return;
+  const duration = 2;
+  const bufferSize = audioCtx.sampleRate * duration;
+  const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i = 0; i < bufferSize; i++) {
+    data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.3));
+  }
+  const source = audioCtx.createBufferSource();
+  source.buffer = buffer;
+  const filter = audioCtx.createBiquadFilter();
+  filter.type = 'bandpass';
+  filter.frequency.value = 2000;
+  const gain = audioCtx.createGain();
+  gain.gain.value = 0.15 * state.settings.sfxVolume;
+  source.connect(filter);
+  filter.connect(gain);
+  gain.connect(audioCtx.destination);
+  source.start();
+}
+function playDrumroll() {
+  for (let i = 0; i < 20; i++) {
+    setTimeout(() => playTone(100 + i * 5, 0.05, 'square', 0.1), i * 50);
+  }
+}
+
+function startAmbientMusic() {
+  if (!state.settings.musicEnabled || !audioCtx) return;
+  stopAmbientMusic();
+  musicGain = audioCtx.createGain();
+  musicGain.gain.value = 0;
+  musicGain.connect(audioCtx.destination);
+  
+  const notes = [130.81, 164.81, 196.00, 246.94];
+  musicOsc = notes.map(freq => {
+    const osc = audioCtx.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.value = freq;
+    const oscGain = audioCtx.createGain();
+    oscGain.gain.value = 0.05;
+    osc.connect(oscGain);
+    oscGain.connect(musicGain);
+    osc.start();
+    return osc;
+  });
+  
+  musicGain.gain.linearRampToValueAtTime(
+    state.settings.musicVolume * 0.3,
+    audioCtx.currentTime + 2
+  );
+}
+
+function stopAmbientMusic() {
+  if (musicOsc) {
+    musicOsc.forEach(o => { try { o.stop(); } catch(e){} });
+    musicOsc = null;
+  }
+  if (musicGain) {
+    try { musicGain.disconnect(); } catch(e){}
+    musicGain = null;
+  }
+}
+
+// ============================================
+// PERSISTÊNCIA
+// ============================================
+function saveState() {
+  try {
+    localStorage.setItem('wisdom_game_state', JSON.stringify({
+      questions: state.questions,
+      settings: state.settings,
+      stats: state.stats
+    }));
+  } catch(e) { console.error('Save error', e); }
+}
+
+function loadState() {
+  try {
+    const saved = localStorage.getItem('wisdom_game_state');
+    if (saved) {
+      const data = JSON.parse(saved);
+      state.questions = data.questions || [...DEFAULT_QUESTIONS];
+      state.settings = { ...state.settings, ...data.settings };
+      state.stats = { ...state.stats, ...data.stats };
+    } else {
+      state.questions = [...DEFAULT_QUESTIONS];
+    }
+  } catch(e) {
+    state.questions = [...DEFAULT_QUESTIONS];
+  }
+}
+
+// ============================================
+// NAVEGAÇÃO
+// ============================================
+function showScreen(screenId) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(screenId).classList.add('active');
+  playClick();
+  window.scrollTo(0, 0);
+  
+  if (screenId === 'screen-editor') renderQuestionList();
+  if (screenId === 'screen-achievements') renderAchievements();
+  if (screenId === 'screen-settings') loadSettingsUI();
+  if (screenId === 'screen-data') loadJsonToViewer();
+}
+
+// ============================================
+// MODO JORNADA
+// ============================================
+function startJourney() {
+  initAudio();
+  startAmbientMusic();
+  state.journey = {
+    day: 1, maxDays: 10,
+    autocontrole: 50, sabedoria: 50, paz: 50,
+    usedEvents: [], currentEvent: null
+  };
+  showScreen('screen-journey');
+  showJourneyEvent();
+}
+
+function getRandomJourneyEvent() {
+  const available = state.questions.filter(q => !state.journey.usedEvents.includes(q.id));
+  if (available.length === 0) {
+    state.journey.usedEvents = [];
+    return state.questions[Math.floor(Math.random() * state.questions.length)];
+  }
+  const event = available[Math.floor(Math.random() * available.length)];
+  state.journey.usedEvents.push(event.id);
+  return event;
+}
+
+function showJourneyEvent() {
+  state.journey.currentEvent = getRandomJourneyEvent();
+  const event = state.journey.currentEvent;
+  
+  document.getElementById('day-counter').textContent = state.journey.day;
+  document.getElementById('event-icon').textContent = event.icon;
+  document.getElementById('event-title').textContent = event.title;
+  document.getElementById('event-description').textContent = event.description;
+  
+  const choicesDiv = document.getElementById('choices');
+  choicesDiv.innerHTML = '';
+  
+  const shuffled = [...event.choices].sort(() => Math.random() - 0.5);
+  
+  shuffled.forEach((choice, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'choice-btn w-full text-left p-4 rounded-xl text-gray-100';
+    btn.innerHTML = `<span class="text-amber-400 font-bold mr-2">${String.fromCharCode(65+i)}.</span> ${choice.text}`;
+    btn.onclick = () => selectJourneyChoice(choice);
+    choicesDiv.appendChild(btn);
+  });
+  
+  document.getElementById('feedback-container').classList.add('hidden');
+  document.getElementById('event-container').classList.remove('hidden');
+  updateJourneyStats();
+}
+
+function selectJourneyChoice(choice) {
+  const event = state.journey.currentEvent;
+  state.journey.autocontrole = Math.max(0, Math.min(100, state.journey.autocontrole + choice.result.autocontrole));
+  state.journey.sabedoria = Math.max(0, Math.min(100, state.journey.sabedoria + choice.result.sabedoria));
+  state.journey.paz = Math.max(0, Math.min(100, state.journey.paz + choice.result.paz));
+  
+  const feedbackContainer = document.getElementById('feedback-container');
+  const feedbackIcon = document.getElementById('feedback-icon');
+  const feedbackText = document.getElementById('feedback-text');
+  const feedbackQuote = document.getElementById('feedback-quote');
+  
+  if (choice.quality === 'good') {
+    feedbackIcon.textContent = '✨';
+    feedbackText.innerHTML = `<span class="text-green-400 font-semibold">Escolha Sábia.</span> ${choice.feedback}`;
+    playSuccess();
+  } else if (choice.quality === 'bad') {
+    feedbackIcon.textContent = '⚠️';
+    feedbackText.innerHTML = `<span class="text-red-400 font-semibold">Escolha Impulsiva.</span> ${choice.feedback}`;
+    playError();
+  } else {
+    feedbackIcon.textContent = '⚖️';
+    feedbackText.innerHTML = `<span class="text-yellow-400 font-semibold">Escolha Neutra.</span> ${choice.feedback}`;
+    playClick();
+  }
+  
+  feedbackQuote.textContent = choice.quote;
+  
+  document.getElementById('event-container').classList.add('hidden');
+  feedbackContainer.classList.remove('hidden');
+  updateJourneyStats();
+}
+
+function nextJourneyEvent() {
+  playClick();
+  state.journey.day++;
+  if (state.journey.day > state.journey.maxDays) {
+    endJourney();
+  } else {
+    showJourneyEvent();
+  }
+}
+
+function updateJourneyStats() {
+  document.getElementById('bar-autocontrole').style.width = state.journey.autocontrole + '%';
+  document.getElementById('val-autocontrole').textContent = state.journey.autocontrole;
+  document.getElementById('bar-sabedoria').style.width = state.journey.sabedoria + '%';
+  document.getElementById('val-sabedoria').textContent = state.journey.sabedoria;
+  document.getElementById('bar-paz').style.width = state.journey.paz + '%';
+  document.getElementById('val-paz').textContent = state.journey.paz;
+}
+
+function endJourney() {
+  stopAmbientMusic();
+  state.stats.journeysCompleted++;
+  
+  const avg = (state.journey.autocontrole + state.journey.sabedoria + state.journey.paz) / 3;
+  if (avg >= 80) state.stats.lastJourneyPerfect = true;
+  
+  const endIcon = document.getElementById('end-icon');
+  const endTitle = document.getElementById('end-title');
+  const endDesc = document.getElementById('end-description');
+  const endQuote = document.getElementById('end-quote');
+  const endStats = document.getElementById('end-stats');
+  
+  endStats.innerHTML = `
+    <div class="bg-black/40 rounded-xl p-4 border border-amber-900/30">
+      <div class="text-3xl mb-2">🛡️</div>
+      <div class="text-amber-400 font-bold text-2xl">${state.journey.autocontrole}</div>
+      <div class="text-xs text-gray-400">Autocontrole</div>
+    </div>
+    <div class="bg-black/40 rounded-xl p-4 border border-amber-900/30">
+      <div class="text-3xl mb-2">📖</div>
+      <div class="text-amber-400 font-bold text-2xl">${state.journey.sabedoria}</div>
+      <div class="text-xs text-gray-400">Sabedoria</div>
+    </div>
+    <div class="bg-black/40 rounded-xl p-4 border border-amber-900/30">
+      <div class="text-3xl mb-2">🕊️</div>
+      <div class="text-amber-400 font-bold text-2xl">${state.journey.paz}</div>
+      <div class="text-xs text-gray-400">Paz Interior</div>
+    </div>
+  `;
+  
+  if (avg >= 80) {
+    endIcon.textContent = '👑';
+    endTitle.textContent = 'Mestre da Sabedoria';
+    endDesc.textContent = 'Você demonstrou um caráter admirável. Diante das provações, manteve a serenidade, agiu com justiça e cultivou a paz interior. Você é como a casa construída sobre a rocha — nenhuma tempestade a derruba.';
+    endQuote.textContent = '"Bem-aventurado o homem que suporta a tentação; porque, quando for provado, receberá a coroa da vida." — Tiago 1:12';
+    playApplause();
+    launchConfetti();
+  } else if (avg >= 60) {
+    endIcon.textContent = '🌟';
+    endTitle.textContent = 'Discípulo no Caminho';
+    endDesc.textContent = 'Você está no caminho certo. Houve tropeços, mas também vitórias importantes. Continue praticando o autocontrole — é um músculo que se fortalece a cada dia.';
+    endQuote.textContent = '"Porque o justo cai sete vezes, e se levanta." — Provérbios 24:16';
+    playSuccess();
+  } else if (avg >= 40) {
+    endIcon.textContent = '🌱';
+    endTitle.textContent = 'Em Aprendizado';
+    endDesc.textContent = 'Você teve dificuldades, mas isso é humano. A boa notícia é que reconheceu seus pontos fracos. Agora você sabe onde precisa crescer. A jornada apenas começou.';
+    endQuote.textContent = '"Ensina-nos a contar os nossos dias, de tal maneira que alcancemos coração sábio." — Salmos 90:12';
+    playClick();
+  } else {
+    endIcon.textContent = '🔥';
+    endTitle.textContent = 'Alma em Tempestade';
+    endDesc.textContent = 'As emoções te dominaram nesta jornada. Mas não desanime — mesmo os maiores sábios começaram assim. O primeiro passo é reconhecer que precisamos mudar. Recomece, reflita, e busque a sabedoria que vem do alto.';
+    endQuote.textContent = '"Cria em mim, ó Deus, um coração puro e renova em mim um espírito inabalável." — Salmos 51:10';
+    playError();
+  }
+  
+  checkAchievements();
+  saveState();
+  showScreen('screen-journey-end');
+}
+
+// ============================================
+// SHOW DA SABEDORIA
+// ============================================
+function setMillionaireDifficulty(diff, btn) {
+  state.millionaire.difficulty = diff;
+  document.querySelectorAll('.difficulty-btn').forEach(b => {
+    b.classList.remove('ring-2', 'ring-amber-400');
+  });
+  btn.classList.add('ring-2', 'ring-amber-400');
+  playClick();
+}
+
+function startMillionaire() {
+  initAudio();
+  startAmbientMusic();
+  state.millionaire = {
+    category: document.getElementById('millionaire-category').value,
+    difficulty: state.millionaire.difficulty || 1,
+    currentQuestion: 0,
+    totalQuestions: 10,
+    prize: 0,
+    helps: { skip: true, universal: true, sage: true, cards: true },
+    usedQuestions: [],
+    currentEvent: null,
+    stopped: false,
+    prizes: [1000, 2000, 5000, 10000, 20000, 50000, 100000, 200000, 500000, 1000000]
+  };
+  
+  const diffNames = ['', '🌱 Aprendiz', '📘 Discípulo', '🎓 Sábio', '👑 Mestre'];
+  document.getElementById('millionaire-diff').textContent = diffNames[state.millionaire.difficulty];
+  
+  const catNames = {
+    all: '🎲 Todas', autocontrole: '😤 Autocontrole', humildade: '🙇 Humildade',
+    perdao: '💝 Perdão', justica: '⚖️ Justiça', paciencia: '⏳ Paciência', fe: '🙏 Fé'
+  };
+  document.getElementById('millionaire-cat').textContent = catNames[state.millionaire.category];
+  
+  showScreen('screen-millionaire');
+  updateHelpButtons();
+  showMillionaireQuestion();
+  playDrumroll();
+}
+
+function getMillionaireQuestion() {
+  let pool = state.questions.filter(q => {
+    if (state.millionaire.usedQuestions.includes(q.id)) return false;
+    if (state.millionaire.category !== 'all' && q.category !== state.millionaire.category) return false;
+    if (q.difficulty > state.millionaire.difficulty) return false;
+    return q.choices.some(c => c.quality === 'good');
+  });
+  
+  if (pool.length === 0) {
+    pool = state.questions.filter(q => {
+      if (state.millionaire.usedQuestions.includes(q.id)) return false;
+      return q.choices.some(c => c.quality === 'good');
+    });
+  }
+  
+  if (pool.length === 0) {
+    state.millionaire.usedQuestions = [];
+    return getMillionaireQuestion();
+  }
+  
+  const q = pool[Math.floor(Math.random() * pool.length)];
+  state.millionaire.usedQuestions.push(q.id);
+  return q;
+}
+
+function showMillionaireQuestion() {
+  const event = getMillionaireQuestion();
+  state.millionaire.currentEvent = event;
+  
+  document.getElementById('millionaire-qnum').textContent = `${state.millionaire.currentQuestion + 1}/${state.millionaire.totalQuestions}`;
+  document.getElementById('millionaire-prize').textContent = formatMoney(state.millionaire.prize);
+  document.getElementById('millionaire-icon').textContent = event.icon;
+  document.getElementById('millionaire-title').textContent = event.title;
+  document.getElementById('millionaire-description').textContent = event.description;
+  
+  const diffLabels = {
+    1: { text: '🌱 Aprendiz', class: 'bg-green-900/50 text-green-400 border border-green-500/50' },
+    2: { text: '📘 Discípulo', class: 'bg-blue-900/50 text-blue-400 border border-blue-500/50' },
+    3: { text: '🎓 Sábio', class: 'bg-purple-900/50 text-purple-400 border border-purple-500/50' },
+    4: { text: '👑 Mestre', class: 'bg-amber-900/50 text-amber-400 border border-amber-500/50' }
+  };
+  const diffLabel = diffLabels[event.difficulty];
+  const diffEl = document.getElementById('millionaire-difficulty-label');
+  diffEl.textContent = diffLabel.text;
+  diffEl.className = `inline-block px-3 py-1 rounded-full text-xs font-bold ${diffLabel.class}`;
+  
+  const choicesDiv = document.getElementById('millionaire-choices');
+  choicesDiv.innerHTML = '';
+  
+  // No modo milhão, a resposta correta é a "good". As outras 3 são alternativas erradas.
+  // Se a pergunta tiver menos de 4 escolhas, completamos com outras perguntas.
+  let choices = [...event.choices];
+  const correctIdx = choices.findIndex(c => c.quality === 'good');
+  
+  // Garantir 4 escolhas
+  while (choices.length < 4) {
+    const filler = state.questions.find(q => 
+      q.id !== event.id && 
+      q.choices.some(c => c.quality === 'bad' || c.quality === 'neutral')
+    );
+    if (filler) {
+      const badChoice = filler.choices.find(c => c.quality !== 'good');
+      if (badChoice && !choices.some(c => c.text === badChoice.text)) {
+        choices.push({ ...badChoice });
+      } else {
+        break;
+      }
+    } else break;
+  }
+  
+  // Se ainda não tem 4, duplica com variações
+  while (choices.length < 4) {
+    const base = choices.find(c => c.quality !== 'good');
+    if (base) choices.push({ ...base, text: base.text + ' (variação)' });
+    else break;
+  }
+  
+  // Embaralhar
+  const indexed = choices.map((c, i) => ({ choice: c, isCorrect: i === correctIdx }));
+  const shuffled = indexed.sort(() => Math.random() - 0.5);
+  
+  state.millionaire.shuffledChoices = shuffled;
+  
+  shuffled.forEach((item, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'choice-btn w-full text-left p-4 rounded-xl text-gray-100';
+    btn.dataset.idx = i;
+    const letter = String.fromCharCode(65 + i);
+    btn.innerHTML = `<span class="text-amber-400 font-bold mr-2">${letter}.</span> ${item.choice.text}`;
+    btn.onclick = () => selectMillionaireChoice(i);
+    choicesDiv.appendChild(btn);
+  });
+  
+  document.getElementById('btn-stop').disabled = state.millionaire.currentQuestion === 0;
+  document.getElementById('millionaire-event').classList.remove('hidden');
+  playClick();
+}
+
+function selectMillionaireChoice(idx) {
+  const chosen = state.millionaire.shuffledChoices[idx];
+  const buttons = document.querySelectorAll('#millionaire-choices .choice-btn');
+  buttons.forEach(b => b.disabled = true);
+  
+  if (chosen.isCorrect) {
+    buttons[idx].classList.add('correct');
+    state.millionaire.prize = state.millionaire.prizes[state.millionaire.currentQuestion];
+    state.stats.totalCorrect = (state.stats.totalCorrect || 0) + 1;
+    playSuccess();
+    showToast('✨', 'Resposta Correta!', `Você ganhou ${formatMoney(state.millionaire.prize)}!`);
+    document.getElementById('millionaire-prize').textContent = formatMoney(state.millionaire.prize);
+    
+    setTimeout(() => {
+      state.millionaire.currentQuestion++;
+      if (state.millionaire.currentQuestion >= state.millionaire.totalQuestions) {
+        endMillionaire(true);
+      } else {
+        showMillionaireQuestion();
+      }
+    }, 2500);
+  } else {
+    buttons[idx].classList.add('wrong');
+    // Mostrar a correta
+    state.millionaire.shuffledChoices.forEach((item, i) => {
+      if (item.isCorrect) buttons[i].classList.add('correct');
+    });
+    playError();
+    showToast('❌', 'Resposta Errada!', `Você perdeu ${formatMoney(state.millionaire.prize)}`);
+    
+    setTimeout(() => {
+      endMillionaire(false);
+    }, 3000);
+  }
+}
+
+function useHelp(type) {
+  if (!state.millionaire.helps[type]) {
+    showToast('⚠️', 'Ajuda Esgotada', 'Você já usou este ajudes!');
+    return;
+  }
+  
+  state.millionaire.helps[type] = false;
+  updateHelpButtons();
+  playClick();
+  
+  if (type === 'skip') {
+    state.millionaire.currentQuestion++;
+    if (state.millionaire.currentQuestion >= state.millionaire.totalQuestions) {
+      endMillionaire(true);
+    } else {
+      showMillionaireQuestion();
+    }
+  } else if (type === 'universal') {
+    // Mostra % de cada alternativa
+    const buttons = document.querySelectorAll('#millionaire-choices .choice-btn');
+    const percs = state.millionaire.shuffledChoices.map(item => 
+      item.isCorrect ? Math.floor(Math.random() * 20) + 70 : Math.floor(Math.random() * 20) + 5
+    );
+    const total = percs.reduce((a,b) => a+b, 0);
+    const normalized = percs.map(p => Math.round(p / total * 100));
+    buttons.forEach((b, i) => {
+      b.innerHTML += ` <span class="float-right text-blue-400 font-bold">${normalized[i]}%</span>`;
+    });
+  } else if (type === 'sage') {
+    // Elimina 2 erradas
+    const buttons = document.querySelectorAll('#millionaire-choices .choice-btn');
+    const wrongIdxs = state.millionaire.shuffledChoices
+      .map((item, i) => ({ item, i }))
+      .filter(x => !x.item.isCorrect)
+      .slice(0, 2)
+      .map(x => x.i);
+    wrongIdxs.forEach(i => {
+      buttons[i].disabled = true;
+      buttons[i].style.opacity = '0.3';
+    });
+  } else if (type === 'cards') {
+    // Revela a correta brevemente
+    const buttons = document.querySelectorAll('#millionaire-choices .choice-btn');
+    const correctIdx = state.millionaire.shuffledChoices.findIndex(x => x.isCorrect);
+    buttons[correctIdx].classList.add('correct');
+    setTimeout(() => {
+      if (!buttons[correctIdx].classList.contains('wrong')) {
+        buttons[correctIdx].classList.remove('correct');
+      }
+    }, 1500);
+  }
+}
+
+function updateHelpButtons() {
+  ['skip', 'universal', 'sage', 'cards'].forEach(h => {
+    const btn = document.getElementById(`help-${h}`);
+    if (!state.millionaire.helps[h]) {
+      btn.disabled = true;
+      btn.style.opacity = '0.3';
+    } else {
+      btn.disabled = false;
+      btn.style.opacity = '1';
+    }
+  });
+}
+
+function stopMillionaire() {
+  if (state.millionaire.currentQuestion === 0) {
+    showToast('⚠️', 'Não é possível', 'Responda pelo menos 1 pergunta antes de parar!');
+    return;
+  }
+  confirmAction(
+    'Parar e Levar?',
+    `Você vai levar ${formatMoney(state.millionaire.prize)} para casa. Tem certeza?`,
+    () => {
+      state.millionaire.stopped = true;
+      endMillionaire(true);
+    }
+  );
+}
+
+function endMillionaire(won) {
+  stopAmbientMusic();
+  
+  const finalPrize = state.millionaire.stopped ? state.millionaire.prize : (won ? state.millionaire.prize : 0);
+  state.stats.totalMoney += finalPrize;
+  if (won && state.millionaire.prize >= 100000) state.stats.millionaireWins++;
+  state.stats.playedAll = true;
+  
+  const endIcon = document.getElementById('millionaire-end-icon');
+  const endTitle = document.getElementById('millionaire-end-title');
+  const endDesc = document.getElementById('millionaire-end-desc');
+  const endQuote = document.getElementById('millionaire-end-quote');
+  const endStats = document.getElementById('millionaire-end-stats');
+  
+  document.getElementById('millionaire-end-prize').textContent = formatMoney(finalPrize);
+  
+  endStats.innerHTML = `
+    <div class="bg-black/40 rounded-xl p-4 border border-amber-900/30">
+      <div class="text-3xl mb-2">✅</div>
+      <div class="text-amber-400 font-bold text-xl">${state.millionaire.currentQuestion}</div>
+      <div class="text-xs text-gray-400">Perguntas Respondidas</div>
+    </div>
+    <div class="bg-black/40 rounded-xl p-4 border border-amber-900/30">
+      <div class="text-3xl mb-2">🎯</div>
+      <div class="text-amber-400 font-bold text-xl">${state.millionaire.currentQuestion > 0 ? Math.round((state.millionaire.currentQuestion / 10) * 100) : 0}%</div>
+      <div class="text-xs text-gray-400">Aproveitamento</div>
+    </div>
+  `;
+  
+  if (state.millionaire.stopped) {
+    endIcon.textContent = '💰';
+    endTitle.textContent = 'Sábio em Parar!';
+    endDesc.textContent = 'Você soube a hora de parar. A sabedoria está em conhecer seus limites e não cair na ganância. Você levou seu prêmio para casa!';
+    endQuote.textContent = '"Melhor é o pouco do justo do que a abundância de muitos ímpios." — Salmos 37:16';
+    playApplause();
+    launchConfetti();
+  } else if (won && finalPrize >= 1000000) {
+    endIcon.textContent = '👑';
+    endTitle.textContent = 'MILIONÁRIO!';
+    endDesc.textContent = 'Você respondeu todas as perguntas e ganhou o prêmio máximo! Você é um verdadeiro mestre da sabedoria!';
+    endQuote.textContent = '"Bem-aventurado o homem que suporta a tentação; porque, quando for provado, receberá a coroa da vida." — Tiago 1:12';
+    playApplause();
+    launchConfetti();
+  } else if (won) {
+    endIcon.textContent = '🎉';
+    endTitle.textContent = 'Parabéns!';
+    endDesc.textContent = 'Você completou o Show da Sabedoria! Continue praticando para alcançar prêmios maiores.';
+    endQuote.textContent = '"O fruto do espírito é: amor, alegria, paz, longanimidade, benignidade, bondade, fidelidade, mansidão, domínio próprio." — Gálatas 5:22';
+    playSuccess();
+  } else {
+    endIcon.textContent = '😔';
+    endTitle.textContent = 'Não Foi Dessa Vez';
+    endDesc.textContent = 'Você errou e perdeu o prêmio acumulado. Mas não desanime — cada erro é uma lição. A sabedoria se constrói com tentativas e acertos.';
+    endQuote.textContent = '"Sete vezes cairá o justo, mas se levantará." — Provérbios 24:16';
+    playError();
+  }
+  
+  checkAchievements();
+  saveState();
+  showScreen('screen-millionaire-end');
+}
+
+// ============================================
+// EDITOR
+// ============================================
+function renderQuestionList() {
+  const filter = document.getElementById('filter-category').value;
+  let list = state.questions;
+  if (filter !== 'all') list = list.filter(q => q.category === filter);
+  
+  document.getElementById('total-questions').textContent = state.questions.length;
+  document.getElementById('custom-questions').textContent = state.questions.filter(q => q.custom).length;
+  
+  const container = document.getElementById('question-list');
+  container.innerHTML = '';
+  
+  if (list.length === 0) {
+    container.innerHTML = '<div class="text-center text-gray-400 py-8">Nenhuma pergunta encontrada.</div>';
+    return;
+  }
+  
+  list.forEach(q => {
+    const catIcons = {
+      autocontrole: '😤', humildade: '🙇', perdao: '💝',
+      justica: '⚖️', paciencia: '⏳', fe: '🙏'
+    };
+    const diffStars = '⭐'.repeat(q.difficulty);
+    
+    const item = document.createElement('div');
+    item.className = 'bg-black/40 rounded-xl p-4 border border-amber-900/30 flex items-center gap-3';
+    item.innerHTML = `
+      <div class="text-3xl">${q.icon}</div>
+      <div class="flex-1 min-w-0">
+        <div class="font-semibold text-amber-400 truncate">${q.title}</div>
+        <div class="text-xs text-gray-400 truncate">${q.description}</div>
+        <div class="flex gap-2 mt-1 flex-wrap">
+          <span class="text-xs px-2 py-0.5 rounded bg-amber-900/30 text-amber-300">${catIcons[q.category]} ${q.category}</span>
+          <span class="text-xs px-2 py-0.5 rounded bg-purple-900/30 text-purple-300">${diffStars}</span>
+          ${q.custom ? '<span class="text-xs px-2 py-0.5 rounded bg-green-900/30 text-green-300">✨ Custom</span>' : ''}
+        </div>
+      </div>
+      <div class="flex gap-1">
+        <button onclick="editQuestion('${q.id}')" class="bg-blue-900/30 hover:bg-blue-900/50 text-blue-300 p-2 rounded" title="Editar">✏️</button>
+        ${q.custom ? `<button onclick="deleteQuestion('${q.id}')" class="bg-red-900/30 hover:bg-red-900/50 text-red-300 p-2 rounded" title="Excluir">🗑️</button>` : ''}
+      </div>
+    `;
+    container.appendChild(item);
+  });
+}
+
+function openNewQuestion() {
+  state.editor.editingId = null;
+  state.editor.choices = [
+    { text: '', feedback: '', quote: '', quality: 'good', result: { autocontrole: 15, sabedoria: 15, paz: 15 } },
+    { text: '', feedback: '', quote: '', quality: 'bad', result: { autocontrole: -10, sabedoria: -10, paz: -10 } }
+  ];
+  document.getElementById('editor-title').textContent = 'Nova Pergunta';
+  document.getElementById('q-category').value = 'autocontrole';
+  document.getElementById('q-difficulty').value = '1';
+  document.getElementById('q-icon').value = '';
+  document.getElementById('q-title').value = '';
+  document.getElementById('q-description').value = '';
+  renderEditorChoices();
+  document.getElementById('modal-editor').classList.remove('hidden');
+}
+
+function editQuestion(id) {
+  const q = state.questions.find(x => x.id === id);
+  if (!q) return;
+  state.editor.editingId = id;
+  state.editor.choices = JSON.parse(JSON.stringify(q.choices));
+  document.getElementById('editor-title').textContent = 'Editar Pergunta';
+  document.getElementById('q-category').value = q.category;
+  document.getElementById('q-difficulty').value = q.difficulty;
+  document.getElementById('q-icon').value = q.icon;
+  document.getElementById('q-title').value = q.title;
+  document.getElementById('q-description').value = q.description;
+  renderEditorChoices();
+  document.getElementById('modal-editor').classList.remove('hidden');
+}
+
+function renderEditorChoices() {
+  const container = document.getElementById('choices-editor');
+  container.innerHTML = '';
+  state.editor.choices.forEach((c, i) => {
+    const div = document.createElement('div');
+    div.className = 'bg-black/40 rounded-lg p-3 border border-amber-900/30';
+    div.innerHTML = `
+      <div class="flex justify-between items-center mb-2">
+        <span class="text-amber-400 font-semibold text-sm">Escolha ${i+1}</span>
+        ${state.editor.choices.length > 2 ? `<button onclick="removeChoice(${i})" class="text-red-400 hover:text-red-300 text-sm">✕ Remover</button>` : ''}
+      </div>
+      <textarea rows="2" placeholder="Texto da escolha" onchange="updateChoice(${i}, 'text', this.value)" class="mb-2 text-sm">${c.text}</textarea>
+      <textarea rows="2" placeholder="Feedback após escolha" onchange="updateChoice(${i}, 'feedback', this.value)" class="mb-2 text-sm">${c.feedback}</textarea>
+      <input type="text" placeholder="Citação (Bíblia/Estoico)" value="${c.quote}" onchange="updateChoice(${i}, 'quote', this.value)" class="mb-2 text-sm">
+      <div class="grid grid-cols-2 gap-2">
+        <select onchange="updateChoice(${i}, 'quality', this.value)" class="text-sm">
+          <option value="good" ${c.quality === 'good' ? 'selected' : ''}>✅ Boa (sábia)</option>
+          <option value="bad" ${c.quality === 'bad' ? 'selected' : ''}>❌ Ruim (impulsiva)</option>
+          <option value="neutral" ${c.quality === 'neutral' ? 'selected' : ''}>⚖️ Neutra</option>
+        </select>
+        <div class="grid grid-cols-3 gap-1 text-xs">
+          <input type="number" value="${c.result.autocontrole}" onchange="updateChoiceResult(${i}, 'autocontrole', this.value)" placeholder="🛡️" title="Autocontrole">
+          <input type="number" value="${c.result.sabedoria}" onchange="updateChoiceResult(${i}, 'sabedoria', this.value)" placeholder="📖" title="Sabedoria">
+          <input type="number" value="${c.result.paz}" onchange="updateChoiceResult(${i}, 'paz', this.value)" placeholder="🕊️" title="Paz">
+        </div>
+      </div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function addChoiceToEditor() {
+  if (state.editor.choices.length >= 4) {
+    showToast('⚠️', 'Limite Atingido', 'Máximo de 4 escolhas por pergunta');
+    return;
+  }
+  state.editor.choices.push({ text: '', feedback: '', quote: '', quality: 'bad', result: { autocontrole: -10, sabedoria: -10, paz: -10 } });
+  renderEditorChoices();
+}
+
+function removeChoice(i) {
+  state.editor.choices.splice(i, 1);
+  renderEditorChoices();
+}
+
+function updateChoice(i, field, value) {
+  state.editor.choices[i][field] = value;
+}
+
+function updateChoiceResult(i, field, value) {
+  state.editor.choices[i].result[field] = parseInt(value) || 0;
+}
+
+function saveQuestion() {
+  const category = document.getElementById('q-category').value;
+  const difficulty = parseInt(document.getElementById('q-difficulty').value);
+  const icon = document.getElementById('q-icon').value.trim() || '❓';
+  const title = document.getElementById('q-title').value.trim();
+  const description = document.getElementById('q-description').value.trim();
+  
+  if (!title || !description) {
+    showToast('⚠️', 'Campos Obrigatórios', 'Preencha título e descrição');
+    return;
+  }
+  
+  const validChoices = state.editor.choices.filter(c => c.text.trim());
+  if (validChoices.length < 2) {
+    showToast('⚠️', 'Escolhas Insuficientes', 'Mínimo de 2 escolhas com texto');
+    return;
+  }
+  
+  if (!validChoices.some(c => c.quality === 'good')) {
+    showToast('⚠️', 'Falta Escolha Boa', 'Pelo menos uma escolha deve ser marcada como "Boa"');
+    return;
+  }
+  
+  const question = {
+    id: state.editor.editingId || 'custom_' + Date.now(),
+    category, difficulty, icon, title, description,
+    choices: validChoices,
+    custom: true
+  };
+  
+  if (state.editor.editingId) {
+    const idx = state.questions.findIndex(q => q.id === state.editor.editingId);
+    if (idx >= 0) state.questions[idx] = question;
+  } else {
+    state.questions.push(question);
+  }
+  
+  saveState();
+  closeEditor();
+  renderQuestionList();
+  showToast('✅', 'Pergunta Salva!', 'Sua pergunta foi adicionada ao banco');
+  checkAchievements();
+}
+
+function deleteQuestion(id) {
+  confirmAction(
+    'Excluir Pergunta?',
+    'Esta ação não pode ser desfeita. Tem certeza?',
+    () => {
+      state.questions = state.questions.filter(q => q.id !== id);
+      saveState();
+      renderQuestionList();
+      showToast('🗑️', 'Pergunta Excluída', 'A pergunta foi removida');
+    }
+  );
+}
+
+function closeEditor() {
+  document.getElementById('modal-editor').classList.add('hidden');
+}
+
+// ============================================
+// IMPORTAR / EXPORTAR
+// ============================================
+function exportData(type) {
+  let data;
+  if (type === 'all') data = state.questions;
+  else if (type === 'custom') data = state.questions.filter(q => q.custom);
+  else data = state.questions.filter(q => !q.custom);
+  
+  const json = JSON.stringify({ questions: data, exportedAt: new Date().toISOString(), version: '2.0' }, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `sabedoria_${type}_${Date.now()}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('📤', 'Exportado!', `${data.length} perguntas exportadas`);
+}
+
+function importData(mode) {
+  const file = document.getElementById('import-file').files[0];
+  if (!file) {
+    showToast('⚠️', 'Selecione um Arquivo', 'Escolha um arquivo JSON para importar');
+    return;
+  }
+  
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (!data.questions || !Array.isArray(data.questions)) {
+        throw new Error('Formato inválido');
+      }
+      
+      if (mode === 'replace') {
+        confirmAction(
+          'Substituir Tudo?',
+          `Isso vai substituir todas as ${state.questions.length} perguntas pelas ${data.questions.length} do arquivo. Continuar?`,
+          () => {
+            state.questions = data.questions;
+            saveState();
+            showToast('✅', 'Importado!', `${data.questions.length} perguntas carregadas`);
+          }
+        );
+      } else {
+        const existingIds = new Set(state.questions.map(q => q.id));
+        const newQuestions = data.questions.filter(q => !existingIds.has(q.id));
+        state.questions.push(...newQuestions);
+        saveState();
+        showToast('✅', 'Adicionado!', `${newQuestions.length} novas perguntas adicionadas`);
+      }
+    } catch(err) {
+      showToast('❌', 'Erro na Importação', 'Arquivo JSON inválido: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+}
+
+function loadJsonToViewer() {
+  document.getElementById('json-viewer').value = JSON.stringify({ questions: state.questions }, null, 2);
+}
+
+function saveJsonFromViewer() {
+  try {
+    const data = JSON.parse(document.getElementById('json-viewer').value);
+    if (!data.questions || !Array.isArray(data.questions)) throw new Error('Formato inválido');
+    state.questions = data.questions;
+    saveState();
+    showToast('✅', 'JSON Salvo!', 'Banco de dados atualizado');
+  } catch(err) {
+    showToast('❌', 'JSON Inválido', err.message);
+  }
+}
+
+function resetToDefaults() {
+  confirmAction(
+    'Restaurar Padrões?',
+    'Isso vai remover todas as perguntas customizadas e restaurar o banco original. Continuar?',
+    () => {
+      state.questions = [...DEFAULT_QUESTIONS];
+      saveState();
+      renderQuestionList();
+      showToast('🔄', 'Restaurado!', 'Banco voltou ao padrão original');
+    }
+  );
+}
+
+// ============================================
+// CONQUISTAS
+// ============================================
+function checkAchievements() {
+  let newAchievements = false;
+  ACHIEVEMENTS.forEach(a => {
+    if (!state.stats.achievements.includes(a.id) && a.check(state.stats)) {
+      state.stats.achievements.push(a.id);
+      newAchievements = true;
+      setTimeout(() => {
+        showToast(a.icon, '🏆 Conquista Desbloqueada!', a.title);
+        playLevelUp();
+      }, 500);
+    }
+  });
+  if (newAchievements) saveState();
+}
+
+function renderAchievements() {
+  document.getElementById('stat-journeys').textContent = state.stats.journeysCompleted;
+  document.getElementById('stat-millionaire').textContent = state.stats.millionaireWins;
+  document.getElementById('stat-money').textContent = formatMoney(state.stats.totalMoney);
+  document.getElementById('stat-achievements').textContent = `${state.stats.achievements.length}/${ACHIEVEMENTS.length}`;
+  
+  const container = document.getElementById('achievements-list');
+  container.innerHTML = '';
+  
+  ACHIEVEMENTS.forEach(a => {
+    const unlocked = state.stats.achievements.includes(a.id);
+    const div = document.createElement('div');
+    div.className = `bg-black/40 rounded-xl p-4 border ${unlocked ? 'border-amber-500/50' : 'border-gray-700/30'} flex items-center gap-3 ${unlocked ? '' : 'opacity-50'}`;
+    div.innerHTML = `
+      <div class="text-4xl ${unlocked ? '' : 'grayscale'}">${a.icon}</div>
+      <div class="flex-1">
+        <div class="font-semibold ${unlocked ? 'text-amber-400' : 'text-gray-400'}">${a.title}</div>
+        <div class="text-xs text-gray-400">${a.desc}</div>
+      </div>
+      <div class="text-2xl">${unlocked ? '✅' : '🔒'}</div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+// ============================================
+// CONFIGURAÇÕES
+// ============================================
+function loadSettingsUI() {
+  document.getElementById('sfx-enabled').checked = state.settings.sfxEnabled;
+  document.getElementById('sfx-volume').value = state.settings.sfxVolume * 100;
+  document.getElementById('music-enabled').checked = state.settings.musicEnabled;
+  document.getElementById('music-volume').value = state.settings.musicVolume * 100;
+  document.getElementById('animations-enabled').checked = state.settings.animationsEnabled;
+}
+
+function updateSettings() {
+  state.settings.sfxEnabled = document.getElementById('sfx-enabled').checked;
+  state.settings.sfxVolume = document.getElementById('sfx-volume').value / 100;
+  state.settings.musicEnabled = document.getElementById('music-enabled').checked;
+  state.settings.musicVolume = document.getElementById('music-volume').value / 100;
+  state.settings.animationsEnabled = document.getElementById('animations-enabled').checked;
+  
+  if (state.settings.musicEnabled) {
+    initAudio();
+    startAmbientMusic();
+  } else {
+    stopAmbientMusic();
+  }
+  
+  saveState();
+  playClick();
+}
+
+function resetAllProgress() {
+  confirmAction(
+    'Resetar TUDO?',
+    'Isso vai apagar TODO seu progresso, conquistas, estatísticas e perguntas customizadas. AÇÃO IRREVERSÍVEL!',
+    () => {
+      localStorage.removeItem('wisdom_game_state');
+      state.questions = [...DEFAULT_QUESTIONS];
+      state.stats = { journeysCompleted: 0, millionaireWins: 0, totalMoney: 0, achievements: [] };
+      saveState();
+      showToast('🔄', 'Tudo Resetado', 'Jogo voltou ao estado inicial');
+    }
+  );
+}
+
+// ============================================
+// UTILITÁRIOS
+// ============================================
+function formatMoney(value) {
+  if (value >= 1000000) return `R$ ${(value/1000000).toFixed(value % 1000000 === 0 ? 0 : 1)}M`;
+  if (value >= 1000) return `R$ ${(value/1000).toFixed(value % 1000 === 0 ? 0 : 1)}k`;
+  return `R$ ${value}`;
+}
+
+function showToast(icon, title, message) {
+  const toast = document.getElementById('toast');
+  document.getElementById('toast-icon').textContent = icon;
+  document.getElementById('toast-title').textContent = title;
+  document.getElementById('toast-message').textContent = message;
+  toast.classList.remove('hidden');
+  setTimeout(() => toast.classList.add('hidden'), 3500);
+}
+
+function confirmAction(title, message, onYes) {
+  document.getElementById('confirm-title').textContent = title;
+  document.getElementById('confirm-message').textContent = message;
+  document.getElementById('modal-confirm').classList.remove('hidden');
+  document.getElementById('confirm-yes').onclick = () => {
+    closeConfirm();
+    onYes();
+  };
+}
+
+function closeConfirm() {
+  document.getElementById('modal-confirm').classList.add('hidden');
+}
+
+function confirmQuit() {
+  confirmAction(
+    'Sair do Jogo?',
+    'Seu progresso atual será perdido. Tem certeza?',
+    () => {
+      stopAmbientMusic();
+      showScreen('screen-menu');
+    }
+  );
+}
+
+function launchConfetti() {
+  if (!state.settings.animationsEnabled) return;
+  const colors = ['#d4af37', '#f4d03f', '#10b981', '#3b82f6', '#a855f7', '#ef4444'];
+  for (let i = 0; i < 50; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.left = Math.random() * 100 + 'vw';
+    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.animationDelay = Math.random() * 2 + 's';
+    piece.style.animationDuration = (Math.random() * 2 + 2) + 's';
+    document.body.appendChild(piece);
+    setTimeout(() => piece.remove(), 5000);
+  }
+}
+
+// ============================================
+// INICIALIZAÇÃO
+// ============================================
+document.addEventListener('DOMContentLoaded', () => {
+  loadState();
+  setMillionaireDifficulty(1, document.querySelector('.difficulty-btn'));
+  
+  // Inicializa áudio no primeiro clique
+  document.addEventListener('click', () => {
+    initAudio();
+    if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+  }, { once: true });
+});
+</script>
+
+</body>
+</html>
